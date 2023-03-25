@@ -41,13 +41,23 @@ int main() {
 
     // usleep(microToSec(3));
 
+    node_t peg0;
+    node_t peg1;
+    node_t peg2;
+
+    Game game;
+    game.score = 0;
+    game.pegs[0] = peg0;
+    game.pegs[2] = peg1;
+    game.pegs[1] = peg2;
+
 
     while (1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
-        printf("t_delta: %f \n", t_delta);
+        // printf("t_delta: %f \n", t_delta);
         while (t_accumulator > t_slice) {
             update(t_delta);
             t_accumulator -= t_slice;
