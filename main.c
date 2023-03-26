@@ -1,24 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 #include <unistd.h>
 #include <pthread.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
-#define esc 27
+#include "logic/structs/Game.h"
 
 void clearConsole();
 double microToMilliSec(double microSeconds);
 double microToSec(double microSeconds);
 double getTimeInSeconds(clock_t t);
 clock_t getTimeInTicks(double t);
+Game getInitGame();
 void update();
 
-typedef struct {
-    unsigned int score;
-    node_t pegs[3];
-} Game;
+
 
 int main() {
     /* while(1) {
@@ -41,6 +38,35 @@ int main() {
 
     // usleep(microToSec(3));
 
+
+
+    // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
+    // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
+    //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
+
+
+    while (1) {
+        t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
+        t_lastUpdate += t_delta;
+        t_accumulator += t_delta;
+
+        while (t_accumulator > t_slice) {
+            update();
+            t_accumulator -= t_slice;
+        }
+
+        render(t_delta);
+    }
+
+    getchar();
+    return 0;
+}
+
+void update() {
+    printf("Updating 1\n");
+}
+
+Game getInitGame() {
     node_t peg0;
     node_t peg1;
     node_t peg2;
@@ -50,28 +76,6 @@ int main() {
     game.pegs[0] = peg0;
     game.pegs[2] = peg1;
     game.pegs[1] = peg2;
-
-
-    while (1) {
-        t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
-        t_lastUpdate += t_delta;
-        t_accumulator += t_delta;
-
-        // printf("t_delta: %f \n", t_delta);
-        while (t_accumulator > t_slice) {
-            update(t_delta);
-            t_accumulator -= t_slice;
-        }
-    }
-
-    getchar();
-    return 0;
-}
-
-void update(double t_delta) {
-
-
-    render(t_delta);
 }
 
 double getTimeInSeconds(clock_t t) {

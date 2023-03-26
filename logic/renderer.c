@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "renderer.h"
 #include "main.h"
 
@@ -15,12 +16,12 @@ struct SMALL_RECT {
 };
 
 void render(double t_delta) {
-    clearConsole();
-    printf("Update, %f\n", t_delta);
+    // clearConsole();
+    // printf("Update, %f\n", t_delta);
 }
 
 void clearConsole() {
-    if (PLATFORM_NAME == "windows") {
+    if (strncmp(PLATFORM_NAME, "windows", 10) == 0) {
         system("cls");
     } else {
         system("clear");

@@ -37,4 +37,7 @@
 #else
     #define PLATFORM_NAME NULL
 #endif
+
+#define esc 27
+
 #endif //TOWEROFHANOI_MAIN_H
