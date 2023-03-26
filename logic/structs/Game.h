@@ -9,6 +9,6 @@
 
 typedef struct {
     unsigned int score;
-    node_t pegs[3];
+    node_t * pegs[3];
 } Game;
 #endif //TOWEROFHANOI_GAME_H

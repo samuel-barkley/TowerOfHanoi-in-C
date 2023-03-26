@@ -12,10 +12,8 @@ double microToMilliSec(double microSeconds);
 double microToSec(double microSeconds);
 double getTimeInSeconds(clock_t t);
 clock_t getTimeInTicks(double t);
-Game getInitGame();
-void update();
-
-
+Game getInitGame(short height);
+void update(Game * game);
 
 int main() {
     /* while(1) {
@@ -38,11 +36,12 @@ int main() {
 
     // usleep(microToSec(3));
 
-
-
     // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
     // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
     //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
+
+
+    Game game = getInitGame(3);
 
 
     while (1) {
@@ -51,31 +50,41 @@ int main() {
         t_accumulator += t_delta;
 
         while (t_accumulator > t_slice) {
-            update();
+            //update(&game);
             t_accumulator -= t_slice;
         }
 
         render(t_delta);
     }
 
-    getchar();
     return 0;
 }
 
-void update() {
-    printf("Updating 1\n");
+void update(Game * game) {
+    printf("%u\n", game->score);
+    // printf("Updating 1\n");
 }
 
-Game getInitGame() {
-    node_t peg0;
-    node_t peg1;
-    node_t peg2;
+Game getInitGame(short height) {
+    node_t * peg0 ;//= (node_t *) malloc(sizeof(node_t));
+    //peg0->value = 3;
+    node_t * peg1 = (node_t *) malloc(sizeof(node_t));
+    node_t * peg2 = (node_t *) malloc(sizeof(node_t));
+
+    push(&peg0, 3);
+    push(&peg0, 2);
+    push(&peg0, 1);
+
+    for (int i = 0; i < height; i++) {
+        push(&peg0, height - i);
+    }
 
     Game game;
     game.score = 0;
     game.pegs[0] = peg0;
     game.pegs[2] = peg1;
     game.pegs[1] = peg2;
+    return game;
 }
 
 double getTimeInSeconds(clock_t t) {
