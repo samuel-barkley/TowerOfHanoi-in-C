@@ -13,6 +13,7 @@ double microToSec(double microSeconds);
 double getTimeInSeconds(clock_t t);
 clock_t getTimeInTicks(double t);
 Game getInitGame(short height);
+char * getDownKeys();
 void update(Game * game);
 
 int main() {
@@ -43,11 +44,15 @@ int main() {
 
     Game game = getInitGame(3);
 
+    short playing = 1;
 
-    while (1) {
+    while (playing) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
+
+        char keysDown[10];
+        strncpy(keysDown, getDownKeys(), sizeof(keysDown) / sizeof(char));
 
         while (t_accumulator > t_slice) {
             update(&game);
@@ -83,6 +88,12 @@ Game getInitGame(short height) {
     game.pegs[2] = peg1;
     game.pegs[1] = peg2;
     return game;
+}
+
+char * getDownKeys() {
+    char * testString = "";
+
+    return  testString;
 }
 
 double getTimeInSeconds(clock_t t) {
