@@ -50,7 +50,7 @@ int main() {
         t_accumulator += t_delta;
 
         while (t_accumulator > t_slice) {
-            //update(&game);
+            update(&game);
             t_accumulator -= t_slice;
         }
 
@@ -62,12 +62,10 @@ int main() {
 
 void update(Game * game) {
     printf("%u\n", game->score);
-    // printf("Updating 1\n");
 }
 
 Game getInitGame(short height) {
     node_t * peg0 ;//= (node_t *) malloc(sizeof(node_t));
-    //peg0->value = 3;
     node_t * peg1 = (node_t *) malloc(sizeof(node_t));
     node_t * peg2 = (node_t *) malloc(sizeof(node_t));
 
