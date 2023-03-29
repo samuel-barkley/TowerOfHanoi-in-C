@@ -8,6 +8,6 @@
 #include "conio.h"
 
 void initTerminal();
-char * getDownKeys(short *keepPlaying);
+char * getDownKeys(short *keepPlaying, char * pressedKeys);
 
 #endif //TOWEROFHANOI_TERMINALHANDLER_H

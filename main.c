@@ -29,8 +29,9 @@ int main() {
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
-        char keysDown[10];
-        strncpy(keysDown, getDownKeys(&playing), sizeof(keysDown) / sizeof(char));
+        char keysDown[100];
+        char * keysPressed = "ab";
+        strncpy(keysDown, getDownKeys(&playing, keysPressed), sizeof(keysDown) / sizeof(char));
         while (t_accumulator > t_slice) {
              update(&game);
              t_accumulator -= t_slice;
@@ -43,7 +44,7 @@ int main() {
 }
 
 void update(Game *game) {
-    printf("%u\r\n", game->score);
+    // printf("%u\r\n", game->score);
 }
 
 Game getInitGame(short height) {
