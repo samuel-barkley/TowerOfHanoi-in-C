@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <strings.h>
+#include <stdio.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -42,7 +43,7 @@ int main() {
 }
 
 void update(Game *game) {
-    // printf("%u\r\n", game->score);
+    printf("%u\r\n", game->score);
 }
 
 Game getInitGame(short height) {

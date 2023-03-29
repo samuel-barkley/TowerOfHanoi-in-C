@@ -22,7 +22,8 @@
 #define PLATFORM_NAME NULL
 #endif
 
-#include "./logic/structs/Game.h"
+#include "time.h"
+#include "./structs/Game.h"
 
 double microToMilliSec(double microSeconds);
 double microToSec(double microSeconds);
