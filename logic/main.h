@@ -16,7 +16,7 @@
     #include <TargetConditionals.h>
     #if TARGET_OS_MAC == 1
         #define PLATFORM_NAME "osx" // Apple OSX
-        #include "./PlatformSpecificFiles/Windows/TerminalHandler.h"
+        #include "./PlatformSpecificFiles/MacOS/TerminalHandler.h"
     #endif
 #else
 #define PLATFORM_NAME NULL

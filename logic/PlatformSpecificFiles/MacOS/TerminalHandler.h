@@ -5,7 +5,7 @@
 #ifndef TOWEROFHANOI_TERMINALHANDLER_H
 #define TOWEROFHANOI_TERMINALHANDLER_H
 
-#include "<termios.h>"
+#include "termios.h"
 
 void initTerminal();
 char * getDownKeys(short *keepPlaying);

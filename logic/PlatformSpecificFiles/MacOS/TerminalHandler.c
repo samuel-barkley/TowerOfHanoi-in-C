@@ -5,9 +5,8 @@
 #include "../../main.h"
 #include <string.h>
 #include <stdlib.h>
-#include <winsock.h>
-#include <io.h>
 #include <stdio.h>
+#include <unistd.h>
 #include "TerminalHandler.h"
 
 struct termios orig_termios;
