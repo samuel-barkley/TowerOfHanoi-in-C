@@ -7,6 +7,7 @@
 
 #include "conio.h"
 
-char * getDownKeys();
+void initTerminal();
+char * getDownKeys(short *keepPlaying);
 
 #endif //TOWEROFHANOI_TERMINALHANDLER_H

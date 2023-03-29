@@ -31,20 +31,18 @@ int main() {
 
     Game game = getInitGame(3);
 
-    //set_conio_terminal_mode();
     short playing = 1;
 
-    while (playing) {
+    while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
         char keysDown[10];
-        strncpy(keysDown, getDownKeys(), sizeof(keysDown) / sizeof(char));
-
+        strncpy(keysDown, getDownKeys(&playing), sizeof(keysDown) / sizeof(char));
         while (t_accumulator > t_slice) {
-            update(&game);
-            t_accumulator -= t_slice;
+             update(&game);
+             t_accumulator -= t_slice;
         }
 
         render(t_delta);
@@ -54,7 +52,7 @@ int main() {
 }
 
 void update(Game *game) {
-    printf("%u\n", game->score);
+    // printf("%u\r\n", game->score);
 }
 
 Game getInitGame(short height) {
@@ -70,12 +68,12 @@ Game getInitGame(short height) {
         push(&peg0, height - i);
     }
 
-    Game game;
-    game.score = 0;
-    game.pegs[0] = peg0;
-    game.pegs[2] = peg1;
-    game.pegs[1] = peg2;
-    return game;
+    Game * game = (Game *) malloc(sizeof(Game));
+    game->score = 0;
+    game->pegs[0] = peg0;
+    game->pegs[2] = peg1;
+    game->pegs[1] = peg2;
+    return *game;
 }
 
 double getTimeInSeconds(clock_t t) {

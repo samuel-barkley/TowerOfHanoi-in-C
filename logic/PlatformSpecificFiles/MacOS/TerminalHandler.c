@@ -17,7 +17,11 @@ void set_conio_terminal_mode();
 int unix_kbhit();
 int unix_getch();
 
-char * getDownKeys() {
+void initTerminal() {
+    set_conio_terminal_mode();
+}
+
+char * getDownKeys(short *keepPlaying) {
     char *testString = "";
 
     if (unix_kbhit()) {

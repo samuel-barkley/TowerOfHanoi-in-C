@@ -7,16 +7,22 @@
 #include "TerminalHandler.h"
 #include "../../main.h"
 
-char * getDownKeys() {
-    while(1) {
-        if (kbhit()) {
-            char c = getch();
-            printf("%d\n", c);
-            switch (c) {
-                case esc:
-                    printf("Exiting...");
-                    exit(0);
-            }
+
+void initTerminal() {
+
+}
+
+char *getDownKeys(short *keepPlaying) {
+    char *pressedKeys = "";
+    if (kbhit()) {
+        int c = getch();
+        printf("%d\n", c);
+        switch (c) {
+            case esc:
+                printf("Exiting...\n");
+                *keepPlaying = 0;
         }
     }
+
+    return pressedKeys;
 }
