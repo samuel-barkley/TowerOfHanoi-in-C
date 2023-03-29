@@ -8,14 +8,6 @@
 #include "logic/structs/StackNode.h"
 #include "logic/structs/Game.h"
 
-double microToMilliSec(double microSeconds);
-double microToSec(double microSeconds);
-double getTimeInSeconds(clock_t t);
-clock_t getTimeInTicks(double t);
-Game getInitGame(short height);
-void set_conio_terminal_mode();
-void update(Game *game);
-
 int main() {
     double t_delta;
     double t_lastUpdate = getTimeInSeconds(clock());

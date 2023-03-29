@@ -22,6 +22,16 @@
 #define PLATFORM_NAME NULL
 #endif
 
+#include "./logic/structs/Game.h"
+
+double microToMilliSec(double microSeconds);
+double microToSec(double microSeconds);
+double getTimeInSeconds(clock_t t);
+clock_t getTimeInTicks(double t);
+Game getInitGame(short height);
+void set_conio_terminal_mode();
+void update(Game *game);
+
 #define esc 27
 
 #endif //TOWEROFHANOI_MAIN_H
