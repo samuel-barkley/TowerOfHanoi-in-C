@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include <pthread.h>
-#include <strings.h>
 #include <stdio.h>
+#include <strings.h>
+#include <string.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -23,16 +23,19 @@ int main() {
     Game game = getInitGame(3);
 
     short playing = 1;
+    char * downKeys = malloc(101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    strcpy(downKeys, "");
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
-        char keysDown[10];
-        strncpy(keysDown, getDownKeys(&playing), sizeof(keysDown) / sizeof(char));
+        getDownKeys(&playing, downKeys);
+        //printf("%d\r\n", downKeys[0]);
+
         while (t_accumulator > t_slice) {
-             update(&game);
+             update(&game, downKeys);
              t_accumulator -= t_slice;
         }
 
@@ -42,12 +45,12 @@ int main() {
     return 0;
 }
 
-void update(Game *game) {
-    printf("%u\r\n", game->score);
+void update(Game *game, char * downKeys) {
+    removeFirstCharIfPresent(downKeys);
 }
 
 Game getInitGame(short height) {
-    node_t *peg0;//= (node_t *) malloc(sizeof(node_t));
+    node_t *peg0 = (node_t *) malloc(sizeof(node_t));
     node_t *peg1 = (node_t *) malloc(sizeof(node_t));
     node_t *peg2 = (node_t *) malloc(sizeof(node_t));
 
@@ -67,6 +70,18 @@ Game getInitGame(short height) {
     return *game;
 }
 
+void removeFirstCharIfPresent(char * charBuffer) {
+    if (charBuffer[0] != '\0') {
+        printf("Removing characters %c", charBuffer[0]);
+        memmove(charBuffer, charBuffer+1, strlen(charBuffer));
+        printf(", Remaining chars are: ");
+        for (int i = 0; i < strlen(charBuffer); i++) {
+            printf("%c, ", charBuffer[i]);
+        }
+        printf("\r\n");
+    }
+}
+
 double getTimeInSeconds(clock_t t) {
     return ((double) t) / CLOCKS_PER_SEC;
 }
@@ -82,5 +97,3 @@ double microToMilliSec(double microSeconds) {
 double microToSec(double microSeconds) {
     return microSeconds * 1000.0 * 1000.0;
 }
-
-

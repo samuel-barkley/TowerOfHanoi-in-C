@@ -29,10 +29,11 @@ double microToMilliSec(double microSeconds);
 double microToSec(double microSeconds);
 double getTimeInSeconds(clock_t t);
 clock_t getTimeInTicks(double t);
+void removeFirstCharIfPresent(char * charBuffer);
 Game getInitGame(short height);
-void set_conio_terminal_mode();
-void update(Game *game);
+void update(Game *game, char * downKeys);
 
 #define esc 27
+#define space 32
 
 #endif //TOWEROFHANOI_MAIN_H

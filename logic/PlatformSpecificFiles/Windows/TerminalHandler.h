@@ -8,6 +8,9 @@
 #include "conio.h"
 
 void initTerminal();
-char * getDownKeys(short *keepPlaying);
+
+/// \param keepPlaying
+/// \param pressedKeys  This is the out param. The currently pressed keys will be added to this char array. (as long as it doesn't exceed the array buffer size.)
+void getDownKeys(short *keepPlaying, char * pressedKeys);
 
 #endif //TOWEROFHANOI_TERMINALHANDLER_H
