@@ -23,15 +23,16 @@ int main() {
     Game game = getInitGame(3);
 
     short playing = 1;
+    char * DownKeys;
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
-        char keysDown[100];
-        char * keysPressed = "ab";
-        strncpy(keysDown, getDownKeys(&playing, keysPressed), sizeof(keysDown) / sizeof(char));
+        DownKeys = getDownKeys(&playing);
+
+        printf("\r\n");
         while (t_accumulator > t_slice) {
              update(&game);
              t_accumulator -= t_slice;

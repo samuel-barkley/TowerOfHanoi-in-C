@@ -14,26 +14,9 @@ void initTerminal() {
 }
 
 
-char *getDownKeys(short *keepPlaying, char * pressedKeys) {
-    // char pressedKeys[100];
-    // memset(pressedKeys,0,strlen(pressedKeys));
+char *getDownKeys(short *keepPlaying) {
+    char * pressedKeys = malloc(101);
 
-
-    printf("test hihi\r\n");
-    printf("%llu\r\n", strnlen(pressedKeys, 1000));
-    char thing = 'a';
-    char otherthing[2]; // 1 + null terminator.
-    otherthing[0] = 'b';
-    printf("length: %llu \r\n", strnlen(otherthing, 100));
-    printf("test0\r\n");
-    char dest[20]="Hello";
-    char src[20]="World";
-    strncat(dest,otherthing,3);
-    printf("%s\n",dest);
-    strncat(dest,otherthing,20);
-    printf("%s\n",dest);
-    strncat(pressedKeys, otherthing, 1);
-    printf("test1");
     if (kbhit()) {
         int c = getch();
         char ch = (char) c;
@@ -44,8 +27,10 @@ char *getDownKeys(short *keepPlaying, char * pressedKeys) {
             case (int) 's':
             case (int) 'd':
                 printf("%llu\r\n", sizeof(ch));
-                strncat(pressedKeys, &ch, sizeof(ch));
-                printf("Added the char: %c to the array", (char) c);
+                if (strnlen(pressedKeys, 110) < 100) {
+                    strncat(pressedKeys, &ch, sizeof(ch));
+                    printf("Added the char: %c to the array", (char) c);
+                }
                 break;
             case esc:
                 printf("Exiting...\n");
