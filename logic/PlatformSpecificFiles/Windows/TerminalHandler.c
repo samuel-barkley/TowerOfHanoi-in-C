@@ -15,7 +15,7 @@ void initTerminal() {
 
 
 char *getDownKeys(short *keepPlaying) {
-    char * pressedKeys = malloc(101);
+    char * pressedKeys = malloc(101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
 
     if (kbhit()) {
         int c = getch();
