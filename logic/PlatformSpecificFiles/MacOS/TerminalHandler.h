@@ -9,5 +9,6 @@
 
 void initTerminal();
 char * getDownKeys(short *keepPlaying);
+void clearTerminal();
 
 #endif //TOWEROFHANOI_TERMINALHANDLER_H

@@ -29,7 +29,7 @@ void getDownKeys(short *keepPlaying, char * pressedKeys) {
                 addCharToList(pressedKeys, ch);
                 break;
             case esc:
-                printf("Exiting...\r\n");
+                // printf("Exiting...\r\n");
                 *keepPlaying = 0;
                 break;
             default:
@@ -39,9 +39,15 @@ void getDownKeys(short *keepPlaying, char * pressedKeys) {
     }
 }
 
+void clearTerminal() {
+    if (strncmp(PLATFORM_NAME, "windows", 7) == 0) {
+        system("cls");
+    }
+}
+
 void addCharToList(char * pressedKeys, char newKey) {
     if (strnlen(pressedKeys, 110) < 100) {
         strncat(pressedKeys, &newKey, sizeof(newKey));
-        printf("Added the char: %c to the array\r\n", newKey);
+        // printf("Added the char: %c to the array\r\n", newKey);
     }
 }

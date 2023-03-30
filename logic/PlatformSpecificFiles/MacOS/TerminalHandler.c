@@ -70,3 +70,9 @@ int unix_getch() {
         return c;
     }
 }
+
+void clearTerminal() {
+    if (strncmp(PLATFORM_NAME, "windows", 7) == 0) {
+        system("clear");
+    }
+}

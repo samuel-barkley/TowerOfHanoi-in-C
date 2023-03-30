@@ -12,12 +12,9 @@ int main() {
     double t_accumulator = getTimeInSeconds(clock());
     double t_slice = 1;
 
-    // usleep(microToSec(3));
-
     // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
     // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
     //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
-
 
     Game game = getInitGame(3);
 
@@ -26,20 +23,22 @@ int main() {
             101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
     strcpy(downKeys, "");
 
+    printf("ghaha");
+    setTerminalSize(1000, 1000);
+
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
 
         getDownKeys(&playing, downKeys);
-        //printf("%d\r\n", downKeys[0]);
 
         while (t_accumulator > t_slice) {
             update(&game, downKeys);
             t_accumulator -= t_slice;
         }
 
-        render(t_delta);
+        // render(t_delta);
     }
 
     return 0;

@@ -5,5 +5,5 @@
 #ifndef TOWEROFHANOI_RENDERER_H
 #define TOWEROFHANOI_RENDERER_H
 void render(double t_delta);
-void clearConsole();
+void setTerminalSize(unsigned int width, unsigned int height);
 #endif //TOWEROFHANOI_RENDERER_H
