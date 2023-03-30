@@ -10,7 +10,7 @@
 
 
 void initTerminal() {
-
+    // Windows doesn't inherently need initializing for per character reading.
 }
 
 

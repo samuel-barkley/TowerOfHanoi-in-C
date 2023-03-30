@@ -49,7 +49,7 @@ void update(Game *game) {
 }
 
 Game getInitGame(short height) {
-    node_t *peg0;//= (node_t *) malloc(sizeof(node_t));
+    node_t *peg0 = (node_t *) malloc(sizeof(node_t));
     node_t *peg1 = (node_t *) malloc(sizeof(node_t));
     node_t *peg2 = (node_t *) malloc(sizeof(node_t));
 
