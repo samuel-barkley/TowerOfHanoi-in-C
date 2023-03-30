@@ -23,6 +23,10 @@ int pop(node_t ** head) {
 }
 
 void push(node_t ** head, int value) {
+    if ((*head)->value == -1) {
+        (*head)->next = NULL;
+    }
+
     node_t * new_node;
     new_node = (node_t *) malloc(sizeof(node_t));
 

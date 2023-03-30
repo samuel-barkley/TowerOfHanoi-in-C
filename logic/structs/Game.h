@@ -10,5 +10,7 @@
 typedef struct {
     unsigned int score;
     node_t * pegs[3];
+    short hoveredPegPos;
+    int selectedRing;
 } Game;
 #endif //TOWEROFHANOI_GAME_H

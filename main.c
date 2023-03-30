@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <strings.h>
 #include <string.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
@@ -23,7 +22,8 @@ int main() {
     Game game = getInitGame(3);
 
     short playing = 1;
-    char * downKeys = malloc(101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    char *downKeys = malloc(
+            101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
     strcpy(downKeys, "");
 
     while (playing == 1) {
@@ -35,8 +35,8 @@ int main() {
         //printf("%d\r\n", downKeys[0]);
 
         while (t_accumulator > t_slice) {
-             update(&game, downKeys);
-             t_accumulator -= t_slice;
+            update(&game, downKeys);
+            t_accumulator -= t_slice;
         }
 
         render(t_delta);
@@ -45,7 +45,38 @@ int main() {
     return 0;
 }
 
-void update(Game *game, char * downKeys) {
+void update(Game *game, char *downKeys) {
+    if (downKeys[0] != '\0') {
+        switch (downKeys[0]) {
+            case 'w':
+                if (game->selectedRing == undefined && game->pegs[game->hoveredPegPos]->value != undefined) {
+                    game->selectedRing = pop(&(game->pegs[game->hoveredPegPos]));
+                }
+                break;
+            case 'a':
+                if (game->hoveredPegPos != 0) {
+                    game->hoveredPegPos--;
+                }
+                break;
+            case 's':
+                if (game->selectedRing != undefined && (game->pegs[game->hoveredPegPos]->value > game->selectedRing || game->pegs[game->hoveredPegPos]->value == undefined)) {
+                    push(&game->pegs[game->hoveredPegPos], game->selectedRing);
+                    game->selectedRing = undefined;
+                }
+                break;
+            case 'd':
+                if (game->hoveredPegPos != sizeof(game->pegs) / sizeof(game->pegs[0]) - 1) {
+                    game->hoveredPegPos++;
+                }
+                break;
+            case space:
+                // Probably won't need this anytime soon.
+                break;
+
+        }
+    }
+
+
     removeFirstCharIfPresent(downKeys);
 }
 
@@ -54,26 +85,31 @@ Game getInitGame(short height) {
     node_t *peg1 = (node_t *) malloc(sizeof(node_t));
     node_t *peg2 = (node_t *) malloc(sizeof(node_t));
 
-    push(&peg0, 3);
-    push(&peg0, 2);
-    push(&peg0, 1);
+    peg0->value = undefined;
+    peg0->next = NULL;
+    peg1->value = undefined;
+    peg1->next = NULL;
+    peg2->value = undefined;
+    peg2->next = NULL;
 
     for (int i = 0; i < height; i++) {
         push(&peg0, height - i);
     }
 
-    Game * game = (Game *) malloc(sizeof(Game));
+    Game *game = (Game *) malloc(sizeof(Game));
     game->score = 0;
     game->pegs[0] = peg0;
     game->pegs[2] = peg1;
     game->pegs[1] = peg2;
+    game->hoveredPegPos = 0;
+    game->selectedRing = undefined;
     return *game;
 }
 
-void removeFirstCharIfPresent(char * charBuffer) {
+void removeFirstCharIfPresent(char *charBuffer) {
     if (charBuffer[0] != '\0') {
         printf("Removing characters %c", charBuffer[0]);
-        memmove(charBuffer, charBuffer+1, strlen(charBuffer));
+        memmove(charBuffer, charBuffer + 1, strlen(charBuffer));
         printf(", Remaining chars are: ");
         for (int i = 0; i < strlen(charBuffer); i++) {
             printf("%c, ", charBuffer[i]);

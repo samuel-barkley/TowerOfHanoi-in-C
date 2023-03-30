@@ -36,4 +36,6 @@ void update(Game *game, char * downKeys);
 #define esc 27
 #define space 32
 
+#define undefined -1
+
 #endif //TOWEROFHANOI_MAIN_H
