@@ -8,32 +8,28 @@
 #include "TerminalHandler.h"
 #include "../../main.h"
 
+void addCharToList(char * pressedKeys, char newKey);
 
 void initTerminal() {
     // Windows doesn't inherently need initializing for per character reading.
 }
 
 
-char *getDownKeys(short *keepPlaying) {
-    char * pressedKeys = malloc(101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
-
+void getDownKeys(short *keepPlaying, char * pressedKeys) {
     if (kbhit()) {
         int c = getch();
         char ch = (char) c;
-        printf("%c\n", (char) c);
+        printf("%d\r\n", c);
         switch (c) {
             case (int) 'w':
             case (int) 'a':
             case (int) 's':
             case (int) 'd':
-                printf("%llu\r\n", sizeof(ch));
-                if (strnlen(pressedKeys, 110) < 100) {
-                    strncat(pressedKeys, &ch, sizeof(ch));
-                    printf("Added the char: %c to the array", (char) c);
-                }
+            case space:
+                addCharToList(pressedKeys, ch);
                 break;
             case esc:
-                printf("Exiting...\n");
+                printf("Exiting...\r\n");
                 *keepPlaying = 0;
                 break;
             default:
@@ -41,6 +37,11 @@ char *getDownKeys(short *keepPlaying) {
                 break;
         }
     }
+}
 
-    return pressedKeys;
+void addCharToList(char * pressedKeys, char newKey) {
+    if (strnlen(pressedKeys, 110) < 100) {
+        strncat(pressedKeys, &newKey, sizeof(newKey));
+        printf("Added the char: %c to the array\r\n", newKey);
+    }
 }
