@@ -18,6 +18,10 @@ int main() {
 
     Game game = getInitGame(3);
 
+    Point pos = {10, 10};
+    setCursorToPos(pos);
+
+    // printf("hihi");
     short playing = 1;
     char *downKeys = malloc(
             101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
@@ -37,7 +41,7 @@ int main() {
             t_accumulator -= t_slice;
         }
 
-        render(t_delta);
+        render(t_delta, &game);
     }
 
     return 0;

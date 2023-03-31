@@ -6,8 +6,10 @@
 #define TOWEROFHANOI_RENDERER_H
 
 #include "structs/DtosHelper.h"
+#include "structs/Game.h"
 
-void render(double t_delta);
+void render(double t_delta, Game * game);
 void setTerminalSize(unsigned int width, unsigned int height);
-void setTerminalBufferSize(Point newTerminalSize);
+void handleGameUpdating(Game * game, Game previousGameState);
+void setCursorToPos(Point pos);
 #endif //TOWEROFHANOI_RENDERER_H

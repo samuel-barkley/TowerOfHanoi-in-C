@@ -13,4 +13,8 @@ typedef struct {
     short hoveredPegPos;
     int selectedRing;
 } Game;
+
+short compareGame(Game a, Game b);
+short getNumberLength(unsigned int number);
+
 #endif //TOWEROFHANOI_GAME_H
