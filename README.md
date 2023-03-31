@@ -1,3 +1,3 @@
-![example workflow](https://github.com/samuel-barkley/TowerOfHanoi/actions/workflows/workflows/deployment.yml/badge.svg)
-[![CI](https://github.com/FreekMencke/node-ts-starter-cli/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/FreekMencke/node-ts-starter-cli/actions/workflows/main.yml)
+![cmake build main](https://github.com/samuel-barkley/TowerOfHanoi/actions/workflows/deployment.yml/badge.svg)
+
 # TowerOfHanoi
