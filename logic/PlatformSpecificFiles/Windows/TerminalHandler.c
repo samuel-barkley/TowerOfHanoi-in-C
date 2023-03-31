@@ -16,6 +16,7 @@ void initTerminal() {
 }
 
 
+// TODO: Make arrow keys work by storing previously pressed key.
 void getDownKeys(short *keepPlaying, char *pressedKeys) {
     if (kbhit()) {
         int c = getch();

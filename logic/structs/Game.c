@@ -3,6 +3,7 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "Game.h"
 #include "../main.h"
 
@@ -22,13 +23,10 @@ short compareGame(Game a, Game b) {
     }
 
     for (unsigned long long i = 0; i < sizeof(a.pegs)/sizeof(a.pegs[0]); i++) {
-        printf("%d", i);
         if (comparePeg(a.pegs[i], b.pegs[i]) == 0) {
             return 0;
         }
     }
-
-    printf("Debug 2\r\n");
 
     return 1;
 }
@@ -65,4 +63,14 @@ short getNumberLength(unsigned int number) {
         count++;
     }
     return count;
+}
+
+char * getNumberCharArray(unsigned int number) {
+    short numberOfChars = getNumberLength(number);
+    int i;
+    char * numberArray = calloc(numberOfChars, sizeof(char));
+    for (i = numberOfChars-1; i>=0; --i, number /= 10) {
+        numberArray[i] = (number % 10) + '0';
+    }
+    return numberArray;
 }

@@ -16,5 +16,6 @@ typedef struct {
 
 short compareGame(Game a, Game b);
 short getNumberLength(unsigned int number);
+char * getNumberCharArray(unsigned int number);
 
 #endif //TOWEROFHANOI_GAME_H

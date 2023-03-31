@@ -26,7 +26,7 @@ int main() {
     strcpy(downKeys, "");
     getTerminalSize();
 
-    while (/*playing ==*/ 1) {
+    while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
         t_accumulator += t_delta;
@@ -34,7 +34,7 @@ int main() {
         getDownKeys(&playing, downKeys);
 
         while (t_accumulator > t_slice) {
-            printf("Update\r\n");
+            //printf("Update\r\n");
             update(&game, downKeys);
             t_accumulator -= t_slice;
         }

@@ -10,12 +10,12 @@
 void handleTerminalCheckingAndResizing(Point terminalSize);
 void updateSelectedRing(Game game);
 void setCursorToPos(Point pos);
+void updateScore(Game game);
 
 Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
 
 void render(double t_delta, Game * game) {
-    printf("Debug 0\r\n");
     Point terminalSize = getTerminalSize();
     handleTerminalCheckingAndResizing(terminalSize);
 
@@ -63,21 +63,24 @@ void handleGameUpdating(Game * game, Game previousGameState) {
 
     if (game->score != previousGameState.score) {
         // TODO: Update the score counter.
-
-        setCursorToPos(scoreBasePos);
-        char * scoreToPrint = "          ";
-        char * numberCharArray = getNumberCharArray();  // TODO: Create this to loop over the chars of the numbers.
-        for (short i = 0; i < getNumberLength(game->score); i++) {
-
-        }
-        printf("%s", scoreToPrint);
-        fflush(stdout);
+        updateScore(*game);
     }
 }
 
 void updateSelectedRing(Game game) {
     // TODO: Remove the selected ring from the peg and hold it at the top.
     setCursorToPos(centralPegBasePos);
+}
+
+void updateScore(Game game) {
+    setCursorToPos(scoreBasePos);
+    char * scoreToPrint = "          ";
+    char * numberCharArray = getNumberCharArray(game.score);
+    for (short i = 0; i < (short) strlen(numberCharArray); i++) {
+        scoreToPrint[i] = numberCharArray[i];
+    }
+    printf("%s", scoreToPrint);
+    fflush(stdout);
 }
 
 void setCursorToPos(Point pos) {
