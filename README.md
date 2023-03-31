@@ -1,2 +1,2 @@
-https://github.com/samuel-barkley/TowerOfHanoi/actions/workflows/workflows/deployment.yml/badge.svg
+![example workflow](https://github.com/samuel-barkley/TowerOfHanoi/actions/workflows/workflows/deployment.yml/badge.svg)
 # TowerOfHanoi
