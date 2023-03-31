@@ -2,6 +2,7 @@
 // Created by Samuel Barkley on 26/03/2023.
 //
 
+#include <stdio.h>
 #include "Game.h"
 #include "../main.h"
 
@@ -21,10 +22,13 @@ short compareGame(Game a, Game b) {
     }
 
     for (unsigned long long i = 0; i < sizeof(a.pegs)/sizeof(a.pegs[0]); i++) {
+        printf("%d", i);
         if (comparePeg(a.pegs[i], b.pegs[i]) == 0) {
             return 0;
         }
     }
+
+    printf("Debug 2\r\n");
 
     return 1;
 }
@@ -43,6 +47,9 @@ short comparePeg(node_t * a_peg, node_t * b_peg) {
         if (a_peg->value != b_peg->value) {
             return 0;
         }
+
+        a_peg = a_peg->next;
+        b_peg = b_peg->next;
     }
 }
 

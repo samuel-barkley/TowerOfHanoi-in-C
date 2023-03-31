@@ -15,6 +15,7 @@ Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
 
 void render(double t_delta, Game * game) {
+    printf("Debug 0\r\n");
     Point terminalSize = getTerminalSize();
     handleTerminalCheckingAndResizing(terminalSize);
 
@@ -22,6 +23,7 @@ void render(double t_delta, Game * game) {
     handleGameUpdating(game, previousGameState);
 
     previousGameState = *game;
+
 }
 
 void setTerminalBufferSize(Point newTerminalSize) {
@@ -64,10 +66,11 @@ void handleGameUpdating(Game * game, Game previousGameState) {
 
         setCursorToPos(scoreBasePos);
         char * scoreToPrint = "          ";
+        char * numberCharArray = getNumberCharArray();  // TODO: Create this to loop over the chars of the numbers.
         for (short i = 0; i < getNumberLength(game->score); i++) {
 
         }
-        printf("%d", game->score);
+        printf("%s", scoreToPrint);
         fflush(stdout);
     }
 }

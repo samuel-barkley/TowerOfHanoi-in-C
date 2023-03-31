@@ -57,9 +57,7 @@ Point getTerminalSize() {
     // printf("columns: %d\n", columns);
     // printf("rows: %d\n", rows);
 
-    Point size = {
-            columns, rows
-    };
+    Point size = {columns, rows};
 
     return size;
 }
