@@ -23,8 +23,7 @@ int main() {
             101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
     strcpy(downKeys, "");
 
-    printf("ghaha");
-    setTerminalSize(1000, 1000);
+    getTerminalSize();
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
@@ -38,7 +37,7 @@ int main() {
             t_accumulator -= t_slice;
         }
 
-        // render(t_delta);
+        render(t_delta);
     }
 
     return 0;

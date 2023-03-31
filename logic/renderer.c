@@ -7,25 +7,32 @@
 #include "renderer.h"
 #include "main.h"
 
-
-/*struct SMALL_RECT {
-    short Left;
-    short Top;
-    short Right;
-    short Bottom;
-};*/
+void handleTerminalCheckingAndResizing(Point terminalSize);
 
 void render(double t_delta) {
-    static unsigned int terminalWidth = 300;
-    static unsigned int terminalHeight = 300;
-    // setTerminalSize(terminalWidth, terminalHeight);
+    Point terminalSize = getTerminalSize();
+    handleTerminalCheckingAndResizing(terminalSize);
 
-    // clearTerminal();    // TODO: This will not work properly. This will flicker. make a double buffer system.
-    // printf("Update, %f\n", t_delta);
+
+}
+
+void setTerminalBufferSize(Point newTerminalSize) {
+
 }
 
 void setTerminalSize(unsigned int width, unsigned int height) {
     //printf("\e[8;50;150t");
-    printf("hihi");
-    system("mode con:cols=10 lines=20");
+
+    // Can't find how to do this at the moment.
+
+    // printf("hihi");
+    // system("mode con:cols=10 lines=20");
+}
+
+void handleTerminalCheckingAndResizing(Point terminalSize) {
+    static Point previousTerminalSize;
+    if (comparePoint(previousTerminalSize, terminalSize) == 0) {
+        setTerminalBufferSize(terminalSize);
+        previousTerminalSize = terminalSize;
+    }
 }

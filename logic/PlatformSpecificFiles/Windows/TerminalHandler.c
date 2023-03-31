@@ -5,17 +5,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <windows.h>
 #include "TerminalHandler.h"
 #include "../../main.h"
 
-void addCharToList(char * pressedKeys, char newKey);
+void addCharToList(char *pressedKeys, char newKey);
 
 void initTerminal() {
     // Windows doesn't inherently need initializing for per character reading.
 }
 
 
-void getDownKeys(short *keepPlaying, char * pressedKeys) {
+void getDownKeys(short *keepPlaying, char *pressedKeys) {
     if (kbhit()) {
         int c = getch();
         char ch = (char) c;
@@ -45,7 +46,25 @@ void clearTerminal() {
     }
 }
 
-void addCharToList(char * pressedKeys, char newKey) {
+Point getTerminalSize() {
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int columns, rows;
+
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+    // printf("columns: %d\n", columns);
+    // printf("rows: %d\n", rows);
+
+    Point size = {
+            columns, rows
+    };
+
+    return size;
+}
+
+void addCharToList(char *pressedKeys, char newKey) {
     if (strnlen(pressedKeys, 110) < 100) {
         strncat(pressedKeys, &newKey, sizeof(newKey));
         // printf("Added the char: %c to the array\r\n", newKey);

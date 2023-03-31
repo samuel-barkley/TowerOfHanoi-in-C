@@ -6,9 +6,11 @@
 #define TOWEROFHANOI_TERMINALHANDLER_H
 
 #include "termios.h"
+#include "../../structs/DtosHelper.h"
 
 void initTerminal();
 char * getDownKeys(short *keepPlaying);
 void clearTerminal();
+Point getTerminalSize();
 
 #endif //TOWEROFHANOI_TERMINALHANDLER_H

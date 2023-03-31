@@ -5,6 +5,7 @@
 #include "../../main.h"
 #include <string.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "TerminalHandler.h"
@@ -75,4 +76,19 @@ void clearTerminal() {
     if (strncmp(PLATFORM_NAME, "windows", 7) == 0) {
         system("clear");
     }
+}
+
+Point getTerminalSize() {
+    struct winsize w;
+
+    ioctl(0, TIOCGWINSZ, &w);
+
+    printf ("lines %d\n", w.ws_row);
+    printf ("columns %d\n", w.ws_col);
+
+    Point size;
+    size.x = w.ws_col;
+    size.y = w.ws_row;
+
+    return size;
 }
