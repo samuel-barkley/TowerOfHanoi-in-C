@@ -22,13 +22,22 @@ short compareGame(Game a, Game b) {
         return 0;
     }
 
-    for (unsigned long long i = 0; i < sizeof(a.pegs)/sizeof(a.pegs[0]); i++) {
+    // max loop size should be 3 (games with more pegs don't make sense.)
+    for (short i = 0; i < (short) (sizeof(a.pegs)/ sizeof(a.pegs[0])); i++) {
         if (comparePeg(a.pegs[i], b.pegs[i]) == 0) {
             return 0;
         }
     }
 
     return 1;
+}
+
+char * generateRing(int size) {
+    char * ringString = malloc(size);
+
+
+
+    return ringString;
 }
 
 short comparePeg(node_t * a_peg, node_t * b_peg) {

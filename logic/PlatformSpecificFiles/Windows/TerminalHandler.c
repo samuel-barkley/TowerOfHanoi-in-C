@@ -12,7 +12,7 @@
 void addCharToList(char *pressedKeys, char newKey);
 
 void initTerminal() {
-    // Windows doesn't inherently need initializing for per character reading.
+    SetConsoleOutputCP( 65001 );    // Set's Windows terminal to use UTF-8
 }
 
 

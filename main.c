@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <windows.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -24,7 +25,11 @@ int main() {
     char *downKeys = malloc(
             101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
     strcpy(downKeys, "");
+
+    initTerminal();
     getTerminalSize();
+
+    printf("\u2590 \u258F");
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
@@ -75,7 +80,6 @@ void update(Game *game, char *downKeys) {
 
         }
     }
-
 
     removeFirstCharIfPresent(downKeys);
 }
