@@ -11,5 +11,4 @@
 void render(double t_delta, Game * game);
 void setTerminalSize(unsigned int width, unsigned int height);
 void handleGameUpdating(Game * game, Game previousGameState);
-void setCursorToPos(Point pos);
 #endif //TOWEROFHANOI_RENDERER_H

@@ -1,5 +1,6 @@
 //
 // Created by samue on 25/03/2023.
+// Block elements Unicode https://symbl.cc/en/unicode/blocks/block-elements/
 //
 
 #include <stdio.h>

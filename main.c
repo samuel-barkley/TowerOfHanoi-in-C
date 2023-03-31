@@ -19,6 +19,16 @@ int main() {
 
     Game game = getInitGame(3);
 
+    // TODO: For next time. Just store the unicode characters in sequence and trust that they will be in the correct order in groups of 4 (or stick it in an array of ints and convert it to a hex at the end. probably not the way to go (maybe it is though))
+    char dest[100];
+    strcpy(dest, "");
+    char * hihi = strncat(dest, "\\u", 10);
+    char * testThing = strncat(hihi, getNumberCharArray(full_block), 50);
+    printf("%s", testThing);
+
+
+    // char * thing = generateRing(4);
+
     Point pos = {10, 10};
 
     short playing = 1;
@@ -29,7 +39,7 @@ int main() {
     initTerminal();
     getTerminalSize();
 
-    printf("\u2590 \u258F");
+    //printf("\u2590 \u258F");
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
