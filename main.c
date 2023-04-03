@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-// #include <windows.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -19,42 +18,13 @@ int main() {
 
     Game game = getInitGame(3);
 
-    // TODO: For next time. Just store the unicode characters in sequence and trust that they will be in the correct order in groups of 4 (or stick it in an array of ints and convert it to a hex at the end. probably not the way to go (maybe it is though))
-    char dest[100];
-    strcpy(dest, "");
-    char * hihi = strncat(dest, "\\u", 10);
-    //char * testThing = strncat(hihi, getNumberCharArray(full_block), 50);
-
-    printf(" %s", right_half_block);
-    printf("%s", full_block);
-    printf("%s\r\n", left_half_block);
-
-    // printf("%s", right_half_block);
-    printf(" %s", full_block);
-    printf("%s", full_block);
-    printf("%s\r\n", full_block);
-    // printf("%s\r\n", left_half_block);
-
-    printf("%s", right_half_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s\r\n", left_half_block);
-
-
-    // char * thing = generateRing(4);
-
-    Point pos = {10, 10};
-
     short playing = 1;
-    char *downKeys = malloc(
-            101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    char *downKeys = malloc(101);
     strcpy(downKeys, "");
 
     initTerminal();
     getTerminalSize();
-
-    //printf("\u2590 \u258F");
 
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
@@ -76,6 +46,7 @@ int main() {
 }
 
 void update(Game *game, char *downKeys) {
+    (game->score)++;
     if (downKeys[0] != '\0') {
         switch (downKeys[0]) {
             case 'w':

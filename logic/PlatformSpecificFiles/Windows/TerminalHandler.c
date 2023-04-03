@@ -12,6 +12,7 @@
 void addCharToList(char *pressedKeys, char newKey);
 
 void initTerminal() {
+    // This didn't really work. Maybe check if this works.
     SetConsoleOutputCP( 65001 );    // Set's Windows terminal to use UTF-8
 }
 
@@ -31,7 +32,6 @@ void getDownKeys(short *keepPlaying, char *pressedKeys) {
                 addCharToList(pressedKeys, ch);
                 break;
             case esc:
-                // printf("Exiting...\r\n");
                 *keepPlaying = 0;
                 break;
             default:

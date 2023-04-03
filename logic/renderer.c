@@ -13,7 +13,7 @@ void updateSelectedRing(Game game);
 void setCursorToPos(Point pos);
 void updateScore(Game game);
 
-Point scoreBasePos = {0, 0};
+Point scoreBasePos = {00, 0};
 Point centralPegBasePos = {0, 0};
 
 void render(double t_delta, Game * game) {
@@ -27,11 +27,16 @@ void render(double t_delta, Game * game) {
 
 }
 
-void setTerminalBufferSize(Point newTerminalSize) {
-    // TODO: To be removed, don't think double buffer will work in terminal.
+void updateElementBasePositions(Point newSize) {
+    scoreBasePos.x = newSize.x / 2;
+    scoreBasePos.y = 0;
+
+    centralPegBasePos.x = newSize.x / 2;
+    centralPegBasePos.y = newSize.y - 1;
 }
 
 void setTerminalSize(unsigned int width, unsigned int height) {
+    // TODO: Probably should be deleted, windows terminal doesn't support it => all windows users => not cross platform enough.
     //printf("\e[8;50;150t");
 
     // Can't find how to do this at the moment.
@@ -43,13 +48,13 @@ void setTerminalSize(unsigned int width, unsigned int height) {
 void handleTerminalCheckingAndResizing(Point terminalSize) {
     static Point previousTerminalSize;
     if (comparePoint(previousTerminalSize, terminalSize) == 0) {
-        setTerminalBufferSize(terminalSize);
+        updateElementBasePositions(terminalSize);
         previousTerminalSize = terminalSize;
     }
 }
 
 void handleGameUpdating(Game * game, Game previousGameState) {
-    if (compareGame(*game, previousGameState) == 0) {
+    if (compareGame(*game, previousGameState) == 1) {
         return; // nothing changed
     }
 
@@ -74,16 +79,40 @@ void updateSelectedRing(Game game) {
 }
 
 void updateScore(Game game) {
-    setCursorToPos(scoreBasePos);
-    char * scoreToPrint = "          ";
+    // printf("updating score logic has been called.\r\n");
+    char scoreToPrint[11];
+    memset(scoreToPrint, '\0', sizeof(scoreToPrint));
+
     char * numberCharArray = getNumberCharArray(game.score);
-    for (short i = 0; i < (short) strlen(numberCharArray); i++) {
-        scoreToPrint[i] = numberCharArray[i];
-    }
-    printf("%s", scoreToPrint);
-    fflush(stdout);
+    short stringLength = (short) strlen(numberCharArray);
+
+    strncpy(scoreToPrint, numberCharArray, stringLength);
+
+    Point adjustedPos;
+    adjustedPos.x = scoreBasePos.x - ((int) strnlen(scoreToPrint, 11));
+
+    setCursorToPos(adjustedPos);
+
+    printf("Score: %s", scoreToPrint);
 }
 
 void setCursorToPos(Point pos) {
     printf("\033[%d;%dH" , pos.y, pos.x);
+    // printf("set the cursor pos\r\n");
+}
+
+void printThing() {
+    printf(" %s", right_half_block);
+    printf("%s", full_block);
+    printf("%s\r\n", left_half_block);
+
+    printf(" %s", full_block);
+    printf("%s", full_block);
+    printf("%s\r\n", full_block);
+
+    printf("%s", right_half_block);
+    printf("%s", full_block);
+    printf("%s", full_block);
+    printf("%s", full_block);
+    printf("%s\r\n", left_half_block);
 }

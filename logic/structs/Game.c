@@ -3,6 +3,7 @@
 //
 
 #include <stdio.h>
+#define _OPEN_SYS_ITOA_EXT
 #include <stdlib.h>
 #include <string.h>
 #include "Game.h"
@@ -11,6 +12,9 @@
 short comparePeg(node_t * a_peg, node_t * b_peg);
 void addRingPart(char ** ringString, char * blockToAdd);
 
+/// \param a
+/// \param b
+/// \return will return 1 if the provided games are the same.
 short compareGame(Game a, Game b) {
     if (a.hoveredPegPos != b.hoveredPegPos) {
         return 0;
@@ -91,11 +95,15 @@ short getNumberLength(unsigned int number) {
 }
 
 char * getNumberCharArray(unsigned int number) {
-    short numberOfChars = getNumberLength(number);
-    int i;
-    char * numberArray = calloc(numberOfChars, sizeof(char));
-    for (i = numberOfChars-1; i>=0; --i, number /= 10) {
-        numberArray[i] = (number % 10) + '0';
-    }
+    char * numberArray = calloc(getNumberLength(number), sizeof(char) * getNumberLength(number) + 1);
+    itoa(number, numberArray, 10); // check how unsigned ints convert to signed ints
+    // short numberOfChars = getNumberLength(number);
+    // int i = 0;
+    // int test = sizeof(char);
+    // char * numberArray = calloc(numberOfChars, sizeof(char));
+    // for (i = numberOfChars-1; i>=0; --i, number /= 10) {
+    //     char hihi = (number % 10) + '0';
+    //     numberArray[i] = (number % 10) + '0';
+    // }
     return numberArray;
 }
