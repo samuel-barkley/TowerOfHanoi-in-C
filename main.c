@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <windows.h>
+// #include <windows.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -23,8 +23,23 @@ int main() {
     char dest[100];
     strcpy(dest, "");
     char * hihi = strncat(dest, "\\u", 10);
-    char * testThing = strncat(hihi, getNumberCharArray(full_block), 50);
-    printf("%s", testThing);
+    //char * testThing = strncat(hihi, getNumberCharArray(full_block), 50);
+
+    printf(" %s", right_half_block);
+    printf("%s", full_block);
+    printf("%s\r\n", left_half_block);
+
+    // printf("%s", right_half_block);
+    printf(" %s", full_block);
+    printf("%s", full_block);
+    printf("%s\r\n", full_block);
+    // printf("%s\r\n", left_half_block);
+
+    printf("%s", right_half_block);
+    printf("%s", full_block);
+    printf("%s", full_block);
+    printf("%s", full_block);
+    printf("%s\r\n", left_half_block);
 
 
     // char * thing = generateRing(4);

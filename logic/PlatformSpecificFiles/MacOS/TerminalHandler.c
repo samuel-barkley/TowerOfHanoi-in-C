@@ -21,16 +21,16 @@ void initTerminal() {
     set_conio_terminal_mode();
 }
 
-char * getDownKeys(short *keepPlaying) {
+char * getDownKeys(short *keepPlaying, char *pressedKeys) {
     char *testString = "";
 
     if (unix_kbhit()) {
         char c = unix_getch();
-        printf("%d\n", c);
+        printf("%d\r\n", c);
         switch (c) {
             case esc:
-                printf("Exiting...");
-                exit(0);
+                // printf("Exiting...");
+                *keepPlaying = 0;
         }
     }
 
@@ -83,8 +83,8 @@ Point getTerminalSize() {
 
     ioctl(0, TIOCGWINSZ, &w);
 
-    printf ("lines %d\n", w.ws_row);
-    printf ("columns %d\n", w.ws_col);
+    // printf ("lines %d\r\n", w.ws_row);
+    // printf ("columns %d\r\n", w.ws_col);
 
     Point size;
     size.x = w.ws_col;

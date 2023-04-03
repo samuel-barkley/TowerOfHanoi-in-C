@@ -9,7 +9,7 @@
 #include "../../structs/DtosHelper.h"
 
 void initTerminal();
-char * getDownKeys(short *keepPlaying);
+char * getDownKeys(short *keepPlaying, char *pressedKeys);
 void clearTerminal();
 Point getTerminalSize();
 

@@ -35,9 +35,9 @@ void update(Game *game, char * downKeys);
 
 
 // Unicode codes for rendering
-#define full_block 0x2580
-#define left_half_block 0x2588
-#define right_half_block 0x2590
+#define full_block "\u2588"
+#define left_half_block "\u258C"
+#define right_half_block "\u2590"
 
 #define esc 27
 #define space 32

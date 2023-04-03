@@ -4,7 +4,7 @@
 //
 
 #include <stdio.h>
-#include <windows.h>
+#include <string.h>
 #include "renderer.h"
 #include "main.h"
 
