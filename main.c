@@ -46,7 +46,6 @@ int main() {
 }
 
 void update(Game *game, char *downKeys) {
-    (game->score)++;
     if (downKeys[0] != '\0') {
         switch (downKeys[0]) {
             case 'w':
