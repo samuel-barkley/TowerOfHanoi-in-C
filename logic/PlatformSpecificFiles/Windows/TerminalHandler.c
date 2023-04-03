@@ -22,7 +22,7 @@ void getDownKeys(short *keepPlaying, char *pressedKeys) {
     if (kbhit()) {
         int c = getch();
         char ch = (char) c;
-        printf("%d\r\n", c);
+        // printf("%d\r\n", c);
         switch (c) {
             case (int) 'w':
             case (int) 'a':

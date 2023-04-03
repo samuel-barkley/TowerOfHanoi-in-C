@@ -12,6 +12,7 @@ typedef struct {
     node_t * pegs[3];
     short hoveredPegPos;
     int selectedRing;
+    short height;
 } Game;
 
 short compareGame(Game a, Game b);

@@ -102,18 +102,19 @@ Game getInitGame(short height) {
     game->pegs[1] = peg2;
     game->hoveredPegPos = 0;
     game->selectedRing = undefined;
+    game->height = height;
     return *game;
 }
 
 void removeFirstCharIfPresent(char *charBuffer) {
     if (charBuffer[0] != '\0') {
-        printf("Removing characters %c", charBuffer[0]);
+        // printf("Removing characters %c", charBuffer[0]);
         memmove(charBuffer, charBuffer + 1, strlen(charBuffer));
-        printf(", Remaining chars are: ");
+        // printf(", Remaining chars are: ");
         for (int i = 0; i < strlen(charBuffer); i++) {
-            printf("%c, ", charBuffer[i]);
+            // printf("%c, ", charBuffer[i]);
         }
-        printf("\r\n");
+        // printf("\r\n");
     }
 }
 
