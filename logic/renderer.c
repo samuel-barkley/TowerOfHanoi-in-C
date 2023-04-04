@@ -9,26 +9,37 @@
 #include "main.h"
 
 void handleTerminalCheckingAndResizing(Game game, Point terminalSize);
+
 void updateSelectedRing(Game game);
+
 void setCursorToPos(Point pos);
+
 void updateScore(Game game);
+
 void refreshScreen(Game game);
+
 void updatePegSelector(Game game);
+
 void clearPegSelectors(short height);
+
 void printThing();
+
 void printBlocksAtPos(short size, Point basePos);
+
 void drawPeg(Game game, short pegNumber);
+
 void drawAllPegs(Game game);
 
 Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
 
-void render(double t_delta, Game * game) {
+void render(double t_delta, Game *game) {
     Point terminalSize = getTerminalSize();
     handleTerminalCheckingAndResizing(*game, terminalSize);
 
     static short shouldInit = 1;
     if (shouldInit == 1) {
+        clearTerminal();
         updateSelectedRing(*game);
         updateScore(*game);
         updatePegSelector(*game);
@@ -70,7 +81,7 @@ void handleTerminalCheckingAndResizing(Game game, Point terminalSize) {
     }
 }
 
-void handleGameUpdating(Game * game, Game previousGameState) {
+void handleGameUpdating(Game *game, Game previousGameState) {
     if (compareGame(*game, previousGameState) == 1) {
         return; // nothing changed
     }
@@ -98,7 +109,7 @@ void updateScore(Game game) {
     char scoreToPrint[11];
     memset(scoreToPrint, '\0', sizeof(scoreToPrint));
 
-    char * numberCharArray = getNumberCharArray(game.score);
+    char *numberCharArray = getNumberCharArray(game.score);
     short stringLength = (short) strlen(numberCharArray);
 
     strncpy(scoreToPrint, numberCharArray, stringLength);
@@ -158,7 +169,7 @@ void clearPegSelectors(short height) {
 }
 
 void setCursorToPos(Point pos) {
-    printf("\033[%d;%dH" , pos.y, pos.x);
+    printf("\033[%d;%dH", pos.y, pos.x);
 }
 
 void refreshScreen(Game game) {
@@ -197,24 +208,28 @@ void printThing() {
 }
 
 void drawAllPegs(Game game) {
+    //TODO: These don't work for some reason.
     drawPeg(game, 0);
-    drawPeg(game, 1);
-    drawPeg(game, 2);
+    //drawPeg(game, 1);
+    //drawPeg(game, 2);
 }
 
 void drawPeg(Game game, short pegNumber) {
+    Game game_copy;
+    // TODO: check how to make the deep copy of the game pegs. because this aint working.
+    copy_game(&game, &game_copy);
     int pegHeight = 0;
     while (1) {
-        if (game.pegs[pegNumber]->value == -1) {
+        if (game_copy.pegs[pegNumber]->value == -1) {
             break;
         }
-
+        pop(&game_copy.pegs[pegNumber]);
         pegHeight++;
     }
 
     while (1) {
         Point adjustedPos;
-        adjustedPos.x =  centralPegBasePos.x;
+        adjustedPos.x = centralPegBasePos.x;
         adjustedPos.y = centralPegBasePos.y + pegHeight;
         printBlocksAtPos(game.pegs[pegNumber]->value, adjustedPos);
         if (pegHeight == 0) {
@@ -239,7 +254,7 @@ void printBlocksAtPos(short size, Point basePos) {
         subtractor = 1;
     }
 
-    size_t sizeOfRing = size - subtractor;
+    short sizeOfRing = size - subtractor;
 
     Point adjustedPos;
     adjustedPos.x = basePos.x - sizeOfRing / 2;

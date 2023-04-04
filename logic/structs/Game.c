@@ -3,7 +3,6 @@
 //
 
 #include <stdio.h>
-#define _OPEN_SYS_ITOA_EXT
 #include <stdlib.h>
 #include <string.h>
 #include "Game.h"
@@ -60,6 +59,35 @@ void addRingPart(char ** ringString, char * blockToAdd) {
     }
 }
 
+void copy_game(Game * src, Game * dest) {
+    dest->hoveredPegPos = src->hoveredPegPos;
+    dest->score = src->score;
+    dest->height = src->height;
+    dest->selectedRing = src->selectedRing;
+    dest->pegs[0]->value = undefined;
+    dest->pegs[0]->next = NULL;
+    push(&dest->pegs[0], src->pegs[0]->value);
+
+    // Part 1 - the null list
+    // if (list == NULL) return NULL;
+
+    // Part 2 - the head element
+    node_t *newHead = malloc(sizeof(node_t));
+    src->pegs[0]->value = newHead->value;
+
+    // Part 3 - the rest of the list
+    node_t *p = newHead;
+    src->pegs[0] = src->pegs[0]->next;
+    while(src->pegs[0] != NULL) {
+        p->next = malloc(sizeof(node_t));
+        p=p->next;
+        p->value = src->pegs[0]->value;
+        src->pegs[0] = src->pegs[0]->next;
+    }
+    p->next = NULL;  // terminate last element.
+
+}
+
 short comparePeg(node_t * a_peg, node_t * b_peg) {
     while (1) {
         if (a_peg->value == undefined && b_peg->value == undefined) {
@@ -96,7 +124,10 @@ short getNumberLength(unsigned int number) {
 
 char * getNumberCharArray(unsigned int number) {
     char * numberArray = calloc(getNumberLength(number), sizeof(char) * getNumberLength(number) + 1);
-    itoa(number, numberArray, 10); // check how unsigned ints convert to signed ints
+    // itoa(number, numberArray, 10); // check how unsigned ints convert to signed ints
+
+    // sprintf(numberArray, "%ud", number);
+
     // short numberOfChars = getNumberLength(number);
     // int i = 0;
     // int test = sizeof(char);

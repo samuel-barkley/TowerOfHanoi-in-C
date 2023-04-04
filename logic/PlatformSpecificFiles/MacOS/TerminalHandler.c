@@ -13,15 +13,18 @@
 struct termios orig_termios;
 
 void reset_terminal_mode();
+
 void set_conio_terminal_mode();
+
 int unix_kbhit();
+
 int unix_getch();
 
 void initTerminal() {
     set_conio_terminal_mode();
 }
 
-char * getDownKeys(short *keepPlaying, char *pressedKeys) {
+char *getDownKeys(short *keepPlaying, char *pressedKeys) {
     char *testString = "";
 
     if (unix_kbhit()) {
@@ -73,9 +76,7 @@ int unix_getch() {
 }
 
 void clearTerminal() {
-    if (strncmp(PLATFORM_NAME, "windows", 7) == 0) {
-        system("clear");
-    }
+    system("clear");
 }
 
 Point getTerminalSize() {
