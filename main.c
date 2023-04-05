@@ -16,7 +16,7 @@ int main() {
     // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
     //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
 
-    Game game = getInitGame(3);
+    Game game = getInitGame(8);
 
     short playing = 1;
     // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅

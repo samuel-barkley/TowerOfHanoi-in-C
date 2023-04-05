@@ -33,6 +33,8 @@ char *getDownKeys(short *keepPlaying, char *pressedKeys) {
         int c = unix_getch();
         char ch = (char) c;
         // printf("%d\r\n", c);
+
+        // TODO: Something is wrong with capturing arrow keys.
         switch (c) {
             case (int) 'w':
             case (int) 'a':
@@ -91,9 +93,7 @@ void clearTerminal() {
 
 Point getTerminalSize() {
     struct winsize w;
-
-    ioctl(0, TIOCGWINSZ, &w);
-
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     // printf ("lines %d\r\n", w.ws_row);
     // printf ("columns %d\r\n", w.ws_col);
 

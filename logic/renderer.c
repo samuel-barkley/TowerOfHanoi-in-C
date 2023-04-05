@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <iconv.h>  // might not be supported on windows. if not, create a OS specific unicode printer.
+#include <stdlib.h>
 #include "renderer.h"
 #include "main.h"
 
@@ -33,6 +34,7 @@ void drawAllPegs(Game game);
 
 Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
+unsigned int pegDistance = 0;
 
 void render(double t_delta, Game *game) {
     Point terminalSize = getTerminalSize();
@@ -41,10 +43,11 @@ void render(double t_delta, Game *game) {
     static short shouldInit = 1;
     if (shouldInit == 1) {
         clearTerminal();
+        pegDistance = game->height + 10;
         updateSelectedRing(*game);
         updateScore(*game);
         updatePegSelector(*game);
-        // drawAllPegs(*game);
+        drawAllPegs(*game);
         shouldInit = 0;
     }
 
@@ -128,6 +131,7 @@ void updateScore(Game game) {
 void updatePegSelector(Game game) {
     clearPegSelectors(game.height);
 
+
     short multiplier = -1;
     switch (game.hoveredPegPos) {
         case 0:
@@ -142,7 +146,7 @@ void updatePegSelector(Game game) {
     }
 
     Point adjustedPos;
-    adjustedPos.x = centralPegBasePos.x + (game.height + 2) * multiplier;
+    adjustedPos.x = centralPegBasePos.x + pegDistance * multiplier;
     adjustedPos.y = centralPegBasePos.y + 1;
     setCursorToPos(adjustedPos);
 
@@ -153,7 +157,8 @@ void updatePegSelector(Game game) {
 
 void clearPegSelectors(short height) {
     Point leftPegBase;
-    leftPegBase.x = centralPegBasePos.x - (height + 2);
+
+    leftPegBase.x = centralPegBasePos.x - (int) pegDistance;
     leftPegBase.y = centralPegBasePos.y + 1;
 
     Point middlePegBase;
@@ -161,7 +166,7 @@ void clearPegSelectors(short height) {
     middlePegBase.y = centralPegBasePos.y + 1;
 
     Point rightPegBase;
-    rightPegBase.x = centralPegBasePos.x + (height + 2);
+    rightPegBase.x = centralPegBasePos.x + (int) pegDistance;
     rightPegBase.y = centralPegBasePos.y + 1;
 
     setCursorToPos(leftPegBase);
@@ -181,46 +186,14 @@ void refreshScreen(Game game) {
     updateScore(game);
 }
 
-void printThing() {
-    printf(" %s", right_half_block);
-    printf("%s", full_block);
-    printf("%s\r\n", left_half_block);
-
-    printf(" %s", full_block);
-    printf("%s", full_block);
-    printf("%s\r\n", full_block);
-
-    printf("%s", right_half_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s\r\n", left_half_block);
-
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-
-    printf("%s", right_half_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", full_block);
-    printf("%s", left_half_block);
-}
-
 void drawAllPegs(Game game) {
-    //TODO: These don't work for some reason.
-    // drawPeg(game, 0);
-    //drawPeg(game, 1);
-    //drawPeg(game, 2);
+    drawPeg(game, 0);
+    // drawPeg(game, 1);
+    // drawPeg(game, 2);
 }
 
 void drawPeg(Game game, short pegNumber) {
     Game game_copy;
-    // TODO: check how to make the deep copy of the game pegs. because this aint working.
     copy_game(&game, &game_copy);
     int pegHeight = 0;
     while (1) {
@@ -232,44 +205,54 @@ void drawPeg(Game game, short pegNumber) {
     }
 
     while (1) {
-        Point adjustedPos;
-        adjustedPos.x = centralPegBasePos.x;
-        adjustedPos.y = centralPegBasePos.y + pegHeight;
-        printBlocksAtPos(game.pegs[pegNumber]->value, adjustedPos);
         if (pegHeight == 0) {
             break;
         }
+
+        Point adjustedPos;
+        adjustedPos.x = centralPegBasePos.x;
+        adjustedPos.y = centralPegBasePos.y - pegHeight;
+        printBlocksAtPos(game.pegs[pegNumber]->value, adjustedPos);
+        game.pegs[pegNumber] = game.pegs[pegNumber]->next;
+
         pegHeight--;
     }
 }
 
 void printBlocksAtPos(short size, Point basePos) {
-    char leftEdge[5];
-    char rightEdge[5];
+    char leftEdge[8];
+    char rightEdge[4];
+    strcpy(leftEdge, "");
+    strcpy(rightEdge, "");
 
     short subtractor = 0;
     if (size % 2 == 1) {
-        strncpy(leftEdge, left_half_block, 4);
+        strncat(leftEdge, full_block, 5);
+        strncat(leftEdge, left_half_block, 5);
+
         strncpy(rightEdge, right_half_block, 4);
-        subtractor = 2;
+        subtractor = 1;
     } else {
         strncpy(leftEdge, full_block, 4);
         strncpy(rightEdge, full_block, 4);
-        subtractor = 1;
+        subtractor = 2;
     }
 
-    short sizeOfRing = size - subtractor;
+    int sizeOfRing = size - subtractor;
 
     Point adjustedPos;
-    adjustedPos.x = basePos.x - sizeOfRing / 2;
+    adjustedPos.x = basePos.x - sizeOfRing / 2 - 1;
     adjustedPos.y = basePos.y;
 
     setCursorToPos(adjustedPos);
 
-    // printf("%s", leftEdge);
-    // for (int i = 0; i < sizeOfRing; i++) {
-    //     printf("%s", full_block);
-    // }
-    // printf("%s", rightEdge);
+    char fullRing[100] = "";
+    strncat(fullRing, rightEdge, 4);
+    for (int i = 0; i < size; i++) {
+        strncat(fullRing, full_block, 4);
+    }
+    strncat(fullRing, leftEdge, 8);
+
+    printf("%s", fullRing);
     fflush(stdout);
 }
