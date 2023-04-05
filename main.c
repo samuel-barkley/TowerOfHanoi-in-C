@@ -1,7 +1,5 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <synchapi.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
