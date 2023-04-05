@@ -12,6 +12,7 @@
     #include "./PlatformSpecificFiles/Windows/TerminalHandler.h"
 #elif defined(__linux__)
     #define PLATFORM_NAME "linux" // Debian, Ubuntu, Gentoo, Fedora, openSUSE, RedHat, Centos and other
+    #include "./PlatformSpecificFiles/MacOS/TerminalHandler.h"
 #elif defined(__APPLE__) && defined(__MACH__) // Apple OSX and iOS (Darwin)
     #include <TargetConditionals.h>
     #if TARGET_OS_MAC == 1
