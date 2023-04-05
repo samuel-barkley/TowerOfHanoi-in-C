@@ -22,9 +22,11 @@ void refreshScreen(Game game);
 
 void updatePegSelector(Game game);
 
-void clearPegSelectors(short height);
+void clearSelectedRings(Game game);
 
-void printThing();
+void clearTopRing(short size, Point basePos);
+
+void clearPegSelectors();
 
 void printBlocksAtPos(short size, Point basePos);
 
@@ -32,9 +34,13 @@ void drawPeg(Game game, short pegNumber);
 
 void drawAllPegs(Game game);
 
+void updateElementBasePositions(Point newSize);
+
+
 Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
 unsigned int pegDistance = 0;
+short heightBuffer = 3;
 
 void render(double t_delta, Game *game) {
     Point terminalSize = getTerminalSize();
@@ -43,6 +49,7 @@ void render(double t_delta, Game *game) {
     static short shouldInit = 1;
     if (shouldInit == 1) {
         clearTerminal();
+        updateElementBasePositions(terminalSize);
         pegDistance = game->height + 10;
         updateSelectedRing(*game);
         updateScore(*game);
@@ -96,6 +103,9 @@ void handleGameUpdating(Game *game, Game previousGameState) {
 
     if (game->hoveredPegPos != previousGameState.hoveredPegPos) {
         updatePegSelector(*game);
+        if (game->selectedRing != undefined) {
+            updateSelectedRing(*game);
+        }
     }
 
     if (game->score != previousGameState.score) {
@@ -104,9 +114,39 @@ void handleGameUpdating(Game *game, Game previousGameState) {
 }
 
 void updateSelectedRing(Game game) {
-    // TODO: Remove the selected ring from the peg and hold it at the top.
+    if (game.selectedRing == undefined) {
+        return;
+    }
+    clearSelectedRings(game);
 
+    short multiplier = -1;
+    switch (game.hoveredPegPos) {
+        case 0:
+            multiplier = -1;
+            break;
+        case 1:
+            multiplier = 0;
+            break;
+        case 2:
+            multiplier = 1;
+            break;
+    }
 
+    Point adjustedPos;
+    adjustedPos.x =
+            (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
+    adjustedPos.y = centralPegBasePos.y - game.height - heightBuffer;
+
+    printBlocksAtPos(game.selectedRing, adjustedPos);
+
+    Point adjustedClearPos;
+    adjustedClearPos.x =
+            (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
+    adjustedClearPos.y = centralPegBasePos.y - game.height - heightBuffer;
+
+    clearTopRing(game.height, adjustedClearPos);
+
+    fflush(stdout);
 }
 
 void updateScore(Game game) {
@@ -129,8 +169,7 @@ void updateScore(Game game) {
 }
 
 void updatePegSelector(Game game) {
-    clearPegSelectors(game.height);
-
+    clearPegSelectors();
 
     short multiplier = -1;
     switch (game.hoveredPegPos) {
@@ -145,17 +184,17 @@ void updatePegSelector(Game game) {
             break;
     }
 
-    Point adjustedPos;
-    adjustedPos.x = centralPegBasePos.x + pegDistance * multiplier;
-    adjustedPos.y = centralPegBasePos.y + 1;
-    setCursorToPos(adjustedPos);
+    Point adjustedSelectorPos;
+    adjustedSelectorPos.x = centralPegBasePos.x + pegDistance * multiplier;
+    adjustedSelectorPos.y = centralPegBasePos.y + 1;
+    setCursorToPos(adjustedSelectorPos);
 
     printf("%s", selector_arrow);
 
     fflush(stdout);
 }
 
-void clearPegSelectors(short height) {
+void clearPegSelectors() {
     Point leftPegBase;
 
     leftPegBase.x = centralPegBasePos.x - (int) pegDistance;
@@ -177,6 +216,38 @@ void clearPegSelectors(short height) {
     printf("%s", space_char);
 }
 
+void clearSelectedRings(Game game) {
+    int widthToClear = game.height + 2;
+    char clearingBuffer[widthToClear + 1];
+    strcpy(clearingBuffer, "");
+    for (int i = 0; i < widthToClear; i++) {
+        clearingBuffer[i] = ' ';
+    }
+    clearingBuffer[widthToClear] = '\0';
+
+    Point cursorPos0;
+    cursorPos0.x = (centralPegBasePos.x - (int) pegDistance) - (widthToClear / 2);
+    cursorPos0.y = centralPegBasePos.y - game.height - heightBuffer;
+
+    Point cursorPos1;
+    cursorPos1.x = centralPegBasePos.x - (widthToClear / 2);
+    cursorPos1.y = centralPegBasePos.y - game.height - heightBuffer;
+
+    Point cursorPos2;
+    cursorPos2.x = (centralPegBasePos.x + (int) pegDistance) - (widthToClear / 2);
+    cursorPos2.y = centralPegBasePos.y - game.height - heightBuffer;
+
+
+    setCursorToPos(cursorPos0);
+    printf("%s", clearingBuffer);
+
+    setCursorToPos(cursorPos1);
+    printf("%s", clearingBuffer);
+
+    setCursorToPos(cursorPos2);
+    printf("%s", clearingBuffer);
+}
+
 void setCursorToPos(Point pos) {
     printf("\033[%d;%dH", pos.y, pos.x);
 }
@@ -188,13 +259,27 @@ void refreshScreen(Game game) {
 
 void drawAllPegs(Game game) {
     drawPeg(game, 0);
-    // drawPeg(game, 1);
-    // drawPeg(game, 2);
+    drawPeg(game, 1);
+    drawPeg(game, 2);
 }
 
 void drawPeg(Game game, short pegNumber) {
     Game game_copy;
     copy_game(&game, &game_copy);
+
+    short multiplier = -1;
+    switch (game.hoveredPegPos) {
+        case 0:
+            multiplier = -1;
+            break;
+        case 1:
+            multiplier = 0;
+            break;
+        case 2:
+            multiplier = 1;
+            break;
+    }
+
     int pegHeight = 0;
     while (1) {
         if (game_copy.pegs[pegNumber]->value == -1) {
@@ -210,7 +295,7 @@ void drawPeg(Game game, short pegNumber) {
         }
 
         Point adjustedPos;
-        adjustedPos.x = centralPegBasePos.x;
+        adjustedPos.x = centralPegBasePos.x + (pegDistance * multiplier);
         adjustedPos.y = centralPegBasePos.y - pegHeight;
         printBlocksAtPos(game.pegs[pegNumber]->value, adjustedPos);
         game.pegs[pegNumber] = game.pegs[pegNumber]->next;
@@ -254,5 +339,32 @@ void printBlocksAtPos(short size, Point basePos) {
     strncat(fullRing, leftEdge, 8);
 
     printf("%s", fullRing);
+    fflush(stdout);
+}
+
+void clearTopRing(short size, Point basePos) {
+    short subtractor = 0;
+    if (size % 2 == 1) {
+        subtractor = 1;
+    } else {
+        subtractor = 2;
+    }
+
+    int sizeOfRing = size - subtractor;
+
+    int clearBufferSize = size + 2;
+    char clearBuffer[clearBufferSize + 1];
+    for (int i = 0; i < clearBufferSize; i++) {
+        clearBuffer[i] = ' ';
+    }
+    clearBuffer[clearBufferSize] = '\0';
+
+    Point adjustedPos;
+    adjustedPos.x = basePos.x - sizeOfRing / 2 - 1;
+    adjustedPos.y = basePos.y + heightBuffer;
+
+    setCursorToPos(adjustedPos);
+
+    printf("%s", clearBuffer);
     fflush(stdout);
 }
