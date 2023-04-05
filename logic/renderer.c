@@ -139,8 +139,7 @@ void updateSelectedRing(Game game) {
     }
 
     Point adjustedPos;
-    adjustedPos.x =
-            (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
+    adjustedPos.x = centralPegBasePos.x + (pegDistance * multiplier);
     adjustedPos.y = centralPegBasePos.y - game.height - heightBuffer;
 
     printBlocksAtPos(game.selectedRing, adjustedPos);
@@ -162,13 +161,13 @@ void clearTopRing(Game game) {
     }
 
     Point adjustedClearPos;
-    adjustedClearPos.x =
-            (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
-    adjustedClearPos.y = centralPegBasePos.y - getNodeCountExclBase(game.pegs[game.hoveredPegPos]);
+    // adjustedClearPos.x =
+    //         (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
+    adjustedClearPos.x = centralPegBasePos.x + (pegDistance * multiplier);
+    // - 1 is because the ring to be deleted has already been removed
+    adjustedClearPos.y = centralPegBasePos.y - getNodeCountExclBase(game.pegs[game.hoveredPegPos]) - 1;
 
-    setCursorToPos(adjustedClearPos);   // TODO: Remove this when debugging is ready.
-
-    clearBlocksAtPos(game.height, adjustedClearPos);
+    clearBlocksAtPos(game.height + 2, adjustedClearPos);
 }
 
 void updateScore(Game game) {
@@ -239,7 +238,7 @@ void clearPegSelectors() {
 }
 
 void clearRingSelections(Game game) {
-    int widthToClear = game.height + 2;
+    int widthToClear = game.height + 4;
     char clearingBuffer[widthToClear + 1];
     strcpy(clearingBuffer, "");
     for (int i = 0; i < widthToClear; i++) {
@@ -248,7 +247,7 @@ void clearRingSelections(Game game) {
     clearingBuffer[widthToClear] = '\0';
 
     Point cursorPos0;
-    cursorPos0.x = (centralPegBasePos.x - (int) pegDistance) - (widthToClear / 2);
+    cursorPos0.x = (centralPegBasePos.x - (int) pegDistance) - (widthToClear / 2) + 1;
     cursorPos0.y = centralPegBasePos.y - game.height - heightBuffer;
 
     Point cursorPos1;
@@ -256,7 +255,7 @@ void clearRingSelections(Game game) {
     cursorPos1.y = centralPegBasePos.y - game.height - heightBuffer;
 
     Point cursorPos2;
-    cursorPos2.x = (centralPegBasePos.x + (int) pegDistance) - (widthToClear / 2);
+    cursorPos2.x = (centralPegBasePos.x + (int) pegDistance) - (widthToClear / 2) + 1;
     cursorPos2.y = centralPegBasePos.y - game.height - heightBuffer;
 
 
@@ -384,7 +383,7 @@ void clearBlocksAtPos(short size, Point basePos) {
 
     Point adjustedPos;
     adjustedPos.x = basePos.x - sizeOfRing / 2 - 1;
-    adjustedPos.y = basePos.y + heightBuffer;
+    adjustedPos.y = basePos.y;
 
     setCursorToPos(adjustedPos);
 

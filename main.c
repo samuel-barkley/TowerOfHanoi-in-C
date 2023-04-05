@@ -10,7 +10,7 @@ int main() {
     double t_delta;
     double t_lastUpdate = getTimeInSeconds(clock());
     double t_accumulator = getTimeInSeconds(clock());
-    double t_slice = 0.25;
+    double t_slice = 0.1;
 
     // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
     // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
@@ -108,13 +108,7 @@ Game getInitGame(short height) {
 
 void removeFirstCharIfPresent(char *charBuffer) {
     if (charBuffer[0] != '\0') {
-        // printf("Removing characters %c", charBuffer[0]);
         memmove(charBuffer, charBuffer + 1, strlen(charBuffer));
-        // printf(", Remaining chars are: ");
-        for (int i = 0; i < strlen(charBuffer); i++) {
-            // printf("%c, ", charBuffer[i]);
-        }
-        // printf("\r\n");
     }
 }
 
