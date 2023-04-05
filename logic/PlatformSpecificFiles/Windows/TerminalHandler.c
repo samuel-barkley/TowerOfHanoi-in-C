@@ -12,15 +12,17 @@
 void addCharToList(char *pressedKeys, char newKey);
 
 void initTerminal() {
-    // Windows doesn't inherently need initializing for per character reading.
+    // This didn't really work. Maybe check if this works.
+    SetConsoleOutputCP( 65001 );    // Set's Windows terminal to use UTF-8
 }
 
 
+// TODO: Make arrow keys work by storing previously pressed key.
 void getDownKeys(short *keepPlaying, char *pressedKeys) {
     if (kbhit()) {
         int c = getch();
         char ch = (char) c;
-        printf("%d\r\n", c);
+        // printf("%d\r\n", c);
         switch (c) {
             case (int) 'w':
             case (int) 'a':
@@ -30,7 +32,6 @@ void getDownKeys(short *keepPlaying, char *pressedKeys) {
                 addCharToList(pressedKeys, ch);
                 break;
             case esc:
-                // printf("Exiting...\r\n");
                 *keepPlaying = 0;
                 break;
             default:
@@ -57,9 +58,7 @@ Point getTerminalSize() {
     // printf("columns: %d\n", columns);
     // printf("rows: %d\n", rows);
 
-    Point size = {
-            columns, rows
-    };
+    Point size = {columns, rows};
 
     return size;
 }

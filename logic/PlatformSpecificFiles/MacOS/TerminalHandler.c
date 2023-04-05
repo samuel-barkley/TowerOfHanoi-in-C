@@ -13,24 +13,39 @@
 struct termios orig_termios;
 
 void reset_terminal_mode();
+
 void set_conio_terminal_mode();
+
 int unix_kbhit();
+
 int unix_getch();
+
+void addCharToList(char *pressedKeys, char newKey);
 
 void initTerminal() {
     set_conio_terminal_mode();
 }
 
-char * getDownKeys(short *keepPlaying) {
+char *getDownKeys(short *keepPlaying, char *pressedKeys) {
     char *testString = "";
 
     if (unix_kbhit()) {
-        char c = unix_getch();
-        printf("%d\n", c);
+        int c = unix_getch();
+        char ch = (char) c;
+        // printf("%d\r\n", c);
+
+        // TODO: Something is wrong with capturing arrow keys.
         switch (c) {
+            case (int) 'w':
+            case (int) 'a':
+            case (int) 's':
+            case (int) 'd':
+            case space:
+                addCharToList(pressedKeys, ch);
+                break;
             case esc:
-                printf("Exiting...");
-                exit(0);
+                // printf("Exiting...");
+                *keepPlaying = 0;
         }
     }
 
@@ -73,22 +88,25 @@ int unix_getch() {
 }
 
 void clearTerminal() {
-    if (strncmp(PLATFORM_NAME, "windows", 7) == 0) {
-        system("clear");
-    }
+    system("clear");
 }
 
 Point getTerminalSize() {
     struct winsize w;
-
-    ioctl(0, TIOCGWINSZ, &w);
-
-    printf ("lines %d\n", w.ws_row);
-    printf ("columns %d\n", w.ws_col);
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    // printf ("lines %d\r\n", w.ws_row);
+    // printf ("columns %d\r\n", w.ws_col);
 
     Point size;
     size.x = w.ws_col;
     size.y = w.ws_row;
 
     return size;
+}
+
+void addCharToList(char *pressedKeys, char newKey) {
+    if (strnlen(pressedKeys, 110) < 100) {
+        strncat(pressedKeys, &newKey, sizeof(newKey));
+        // printf("Added the char: %c to the array\r\n", newKey);
+    }
 }

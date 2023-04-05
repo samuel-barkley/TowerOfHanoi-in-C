@@ -33,9 +33,18 @@ void removeFirstCharIfPresent(char * charBuffer);
 Game getInitGame(short height);
 void update(Game *game, char * downKeys);
 
+
+// Unicode codes for rendering
+#define line "|"
+#define full_block "\u2588"
+#define left_half_block "\u258C"
+#define right_half_block "\u2590"
+#define selector_arrow "\u25B4"
+#define space_char " "
+
 #define esc 27
 #define space 32
 
-#define undefined -1
+#define undefined (-1)
 
 #endif //TOWEROFHANOI_MAIN_H

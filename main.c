@@ -10,19 +10,20 @@ int main() {
     double t_delta;
     double t_lastUpdate = getTimeInSeconds(clock());
     double t_accumulator = getTimeInSeconds(clock());
-    double t_slice = 1;
+    double t_slice = 0.1;
 
     // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
     // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
     //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
 
-    Game game = getInitGame(3);
+    Game game = getInitGame(8);
 
     short playing = 1;
-    char *downKeys = malloc(
-            101);   // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    // Can be made smaller. Probably don't need a 100 char long buffer between update functions. 😅
+    char *downKeys = malloc(101);
     strcpy(downKeys, "");
 
+    initTerminal();
     getTerminalSize();
 
     while (playing == 1) {
@@ -33,11 +34,12 @@ int main() {
         getDownKeys(&playing, downKeys);
 
         while (t_accumulator > t_slice) {
+            // printf("Update\r\n");
             update(&game, downKeys);
             t_accumulator -= t_slice;
         }
 
-        render(t_delta);
+        render(t_delta, &game);
     }
 
     return 0;
@@ -74,7 +76,6 @@ void update(Game *game, char *downKeys) {
         }
     }
 
-
     removeFirstCharIfPresent(downKeys);
 }
 
@@ -101,18 +102,13 @@ Game getInitGame(short height) {
     game->pegs[1] = peg2;
     game->hoveredPegPos = 0;
     game->selectedRing = undefined;
+    game->height = height;
     return *game;
 }
 
 void removeFirstCharIfPresent(char *charBuffer) {
     if (charBuffer[0] != '\0') {
-        printf("Removing characters %c", charBuffer[0]);
         memmove(charBuffer, charBuffer + 1, strlen(charBuffer));
-        printf(", Remaining chars are: ");
-        for (int i = 0; i < strlen(charBuffer); i++) {
-            printf("%c, ", charBuffer[i]);
-        }
-        printf("\r\n");
     }
 }
 

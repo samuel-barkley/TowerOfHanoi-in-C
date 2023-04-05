@@ -5,13 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "StackNode.h"
+#include "../main.h"
 
 int pop(node_t ** head) {
-    int retval = -1;
+    int retval = undefined;
     node_t * next_node = NULL;
 
     if (*head == NULL) {
-        return -1;
+        return undefined;
     }
 
     next_node = (*head)->next;
@@ -33,4 +34,18 @@ void push(node_t ** head, int value) {
     new_node->value = value;
     new_node->next = *head;
     *head = new_node;
+}
+
+unsigned int getNodeCountExclBase(node_t * head) {
+    if (head == NULL || head->value == undefined) {
+        return 0;
+    }
+
+    unsigned int nodeCount = 1;
+    while (head->next->value != undefined) {
+        nodeCount++;
+        head = head->next;
+    }
+
+    return nodeCount;
 }
