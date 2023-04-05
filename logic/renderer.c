@@ -5,7 +5,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <iconv.h>  // might not be supported on windows. if not, create a OS specific unicode printer.
 #include <stdlib.h>
 #include "renderer.h"
 #include "main.h"
