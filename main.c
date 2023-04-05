@@ -34,7 +34,7 @@ int main() {
         getDownKeys(&playing, downKeys);
 
         while (t_accumulator > t_slice) {
-            printf("Update\r\n");
+            // printf("Update\r\n");
             update(&game, downKeys);
             t_accumulator -= t_slice;
         }

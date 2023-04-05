@@ -39,7 +39,7 @@ void update(Game *game, char * downKeys);
 #define full_block "\u2588"
 #define left_half_block "\u258C"
 #define right_half_block "\u2590"
-#define selector_arrow "\U0001F891"
+#define selector_arrow "\u25B4"
 #define space_char " "
 
 #define esc 27

@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <iconv.h>  // might not be supported on windows. if not, create a OS specific unicode printer.
 #include "renderer.h"
 #include "main.h"
 
@@ -43,7 +44,7 @@ void render(double t_delta, Game *game) {
         updateSelectedRing(*game);
         updateScore(*game);
         updatePegSelector(*game);
-        drawAllPegs(*game);
+        // drawAllPegs(*game);
         shouldInit = 0;
     }
 
@@ -144,7 +145,10 @@ void updatePegSelector(Game game) {
     adjustedPos.x = centralPegBasePos.x + (game.height + 2) * multiplier;
     adjustedPos.y = centralPegBasePos.y + 1;
     setCursorToPos(adjustedPos);
+
     printf("%s", selector_arrow);
+
+    fflush(stdout);
 }
 
 void clearPegSelectors(short height) {
@@ -209,7 +213,7 @@ void printThing() {
 
 void drawAllPegs(Game game) {
     //TODO: These don't work for some reason.
-    drawPeg(game, 0);
+    // drawPeg(game, 0);
     //drawPeg(game, 1);
     //drawPeg(game, 2);
 }
@@ -262,9 +266,10 @@ void printBlocksAtPos(short size, Point basePos) {
 
     setCursorToPos(adjustedPos);
 
-    printf("%s", leftEdge);
-    for (int i = 0; i < sizeOfRing; i++) {
-        printf("%s", full_block);
-    }
-    printf("%s", rightEdge);
+    // printf("%s", leftEdge);
+    // for (int i = 0; i < sizeOfRing; i++) {
+    //     printf("%s", full_block);
+    // }
+    // printf("%s", rightEdge);
+    fflush(stdout);
 }

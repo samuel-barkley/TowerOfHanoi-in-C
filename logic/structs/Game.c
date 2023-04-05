@@ -10,6 +10,7 @@
 
 short comparePeg(node_t * a_peg, node_t * b_peg);
 void addRingPart(char ** ringString, char * blockToAdd);
+node_t * copyList(node_t * head);
 
 /// \param a
 /// \param b
@@ -59,33 +60,37 @@ void addRingPart(char ** ringString, char * blockToAdd) {
     }
 }
 
+node_t * copyList(node_t * src)
+{
+    if (src == NULL) {
+        return NULL;
+    }
+    else {
+
+        // Allocate the memory for new Node
+        // in the heap and set its data
+        node_t * newNode = (node_t*)malloc(sizeof(node_t));
+
+        newNode->value = src->value;
+
+        // Recursively set the next pointer of
+        // the new Node by recurring for the
+        // remaining nodes
+        newNode->next = copyList(src->next);
+
+        return newNode;
+    }
+}
+
 void copy_game(Game * src, Game * dest) {
     dest->hoveredPegPos = src->hoveredPegPos;
     dest->score = src->score;
     dest->height = src->height;
     dest->selectedRing = src->selectedRing;
-    dest->pegs[0]->value = undefined;
-    dest->pegs[0]->next = NULL;
-    push(&dest->pegs[0], src->pegs[0]->value);
 
-    // Part 1 - the null list
-    // if (list == NULL) return NULL;
-
-    // Part 2 - the head element
-    node_t *newHead = malloc(sizeof(node_t));
-    src->pegs[0]->value = newHead->value;
-
-    // Part 3 - the rest of the list
-    node_t *p = newHead;
-    src->pegs[0] = src->pegs[0]->next;
-    while(src->pegs[0] != NULL) {
-        p->next = malloc(sizeof(node_t));
-        p=p->next;
-        p->value = src->pegs[0]->value;
-        src->pegs[0] = src->pegs[0]->next;
-    }
-    p->next = NULL;  // terminate last element.
-
+    dest->pegs[0] = copyList(src->pegs[0]);
+    dest->pegs[1] = copyList(src->pegs[1]);
+    dest->pegs[2] = copyList(src->pegs[2]);
 }
 
 short comparePeg(node_t * a_peg, node_t * b_peg) {
