@@ -20,6 +20,8 @@ int unix_kbhit();
 
 int unix_getch();
 
+void addCharToList(char *pressedKeys, char newKey);
+
 void initTerminal() {
     set_conio_terminal_mode();
 }
@@ -28,9 +30,17 @@ char *getDownKeys(short *keepPlaying, char *pressedKeys) {
     char *testString = "";
 
     if (unix_kbhit()) {
-        char c = unix_getch();
-        printf("%d\r\n", c);
+        int c = unix_getch();
+        char ch = (char) c;
+        // printf("%d\r\n", c);
         switch (c) {
+            case (int) 'w':
+            case (int) 'a':
+            case (int) 's':
+            case (int) 'd':
+            case space:
+                addCharToList(pressedKeys, ch);
+                break;
             case esc:
                 // printf("Exiting...");
                 *keepPlaying = 0;
@@ -92,4 +102,11 @@ Point getTerminalSize() {
     size.y = w.ws_row;
 
     return size;
+}
+
+void addCharToList(char *pressedKeys, char newKey) {
+    if (strnlen(pressedKeys, 110) < 100) {
+        strncat(pressedKeys, &newKey, sizeof(newKey));
+        // printf("Added the char: %c to the array\r\n", newKey);
+    }
 }
