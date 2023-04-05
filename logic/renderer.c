@@ -277,6 +277,9 @@ void setCursorToPos(Point pos) {
 void refreshScreen(Game game) {
     clearTerminal();
     updateScore(game);
+    drawAllPegs(game);
+    updatePegSelector(game);
+    updateSelectedRing(game);
 }
 
 void drawAllPegs(Game game) {
