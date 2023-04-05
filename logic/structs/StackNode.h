@@ -11,4 +11,6 @@ typedef struct node {
 
 int pop(node_t ** head);
 void push(node_t ** head, int value);
+unsigned int getNodeCountExclBase(node_t * head);
+
 #endif //TOWEROFHANOI_STACKNODE_H

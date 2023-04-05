@@ -22,9 +22,9 @@ void refreshScreen(Game game);
 
 void updatePegSelector(Game game);
 
-void clearSelectedRings(Game game);
+void clearRingSelections(Game game);
 
-void clearTopRing(short size, Point basePos);
+void clearBlocksAtPos(short size, Point basePos);
 
 void clearPegSelectors();
 
@@ -33,6 +33,8 @@ void printBlocksAtPos(short size, Point basePos);
 void drawPeg(Game game, short pegNumber);
 
 void drawAllPegs(Game game);
+
+void clearTopRing(Game game);
 
 void updateElementBasePositions(Point newSize);
 
@@ -99,6 +101,11 @@ void handleGameUpdating(Game *game, Game previousGameState) {
 
     if (game->selectedRing != previousGameState.selectedRing) {
         updateSelectedRing(*game);
+        if (game->selectedRing == undefined) {
+            clearRingSelections(*game);
+            clearTopRing(*game);
+        }
+        drawPeg(*game, game->hoveredPegPos);
     }
 
     if (game->hoveredPegPos != previousGameState.hoveredPegPos) {
@@ -117,7 +124,7 @@ void updateSelectedRing(Game game) {
     if (game.selectedRing == undefined) {
         return;
     }
-    clearSelectedRings(game);
+    clearRingSelections(game);
 
     short multiplier = -1;
     switch (game.hoveredPegPos) {
@@ -138,15 +145,31 @@ void updateSelectedRing(Game game) {
     adjustedPos.y = centralPegBasePos.y - game.height - heightBuffer;
 
     printBlocksAtPos(game.selectedRing, adjustedPos);
+    clearTopRing(game);
+}
+
+void clearTopRing(Game game) {
+    short multiplier = -1;
+    switch (game.hoveredPegPos) {
+        case 0:
+            multiplier = -1;
+            break;
+        case 1:
+            multiplier = 0;
+            break;
+        case 2:
+            multiplier = 1;
+            break;
+    }
 
     Point adjustedClearPos;
     adjustedClearPos.x =
             (centralPegBasePos.x + ((int) pegDistance) * multiplier) - (game.pegs[game.hoveredPegPos]->value / 2) + 1;
-    adjustedClearPos.y = centralPegBasePos.y - game.height - heightBuffer;
+    adjustedClearPos.y = centralPegBasePos.y - getNodeCountExclBase(game.pegs[game.hoveredPegPos]);
 
-    clearTopRing(game.height, adjustedClearPos);
+    setCursorToPos(adjustedClearPos);   // TODO: Remove this when debugging is ready.
 
-    fflush(stdout);
+    clearBlocksAtPos(game.height, adjustedClearPos);
 }
 
 void updateScore(Game game) {
@@ -216,7 +239,7 @@ void clearPegSelectors() {
     printf("%s", space_char);
 }
 
-void clearSelectedRings(Game game) {
+void clearRingSelections(Game game) {
     int widthToClear = game.height + 2;
     char clearingBuffer[widthToClear + 1];
     strcpy(clearingBuffer, "");
@@ -246,6 +269,7 @@ void clearSelectedRings(Game game) {
 
     setCursorToPos(cursorPos2);
     printf("%s", clearingBuffer);
+    fflush(stdout);
 }
 
 void setCursorToPos(Point pos) {
@@ -342,7 +366,7 @@ void printBlocksAtPos(short size, Point basePos) {
     fflush(stdout);
 }
 
-void clearTopRing(short size, Point basePos) {
+void clearBlocksAtPos(short size, Point basePos) {
     short subtractor = 0;
     if (size % 2 == 1) {
         subtractor = 1;

@@ -35,3 +35,17 @@ void push(node_t ** head, int value) {
     new_node->next = *head;
     *head = new_node;
 }
+
+unsigned int getNodeCountExclBase(node_t * head) {
+    if (head == NULL || head->value == undefined) {
+        return 0;
+    }
+
+    unsigned int nodeCount = 1;
+    while (head->next->value != undefined) {
+        nodeCount++;
+        head = head->next;
+    }
+
+    return nodeCount;
+}
