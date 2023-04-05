@@ -8,7 +8,7 @@
 #include "StackNode.h"
 
 typedef struct {
-    unsigned int score;
+    long long time;
     node_t * pegs[3];
     short hoveredPegPos;
     int selectedRing;

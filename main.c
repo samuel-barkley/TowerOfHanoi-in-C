@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <synchapi.h>
 #include "logic/main.h"
 #include "logic/renderer.h"
 #include "logic/structs/StackNode.h"
@@ -11,10 +12,8 @@ int main() {
     double t_lastUpdate = getTimeInSeconds(clock());
     double t_accumulator = getTimeInSeconds(clock());
     double t_slice = 0.1;
-
-    // TODO: Set size of the terminal in those that support printer control sequences.  printf("\e[8;50;150t");
-    // TODO: Set size of terminal in windows if it doesn't support printer control sequences.   SMALL_RECT windowSize = {0 , 0 , 77 , 47} //change the values
-    //    SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize)
+    long long startTime = time(NULL);
+    long long gameClockAccumulator = startTime;
 
     Game game = getInitGame(8);
 
@@ -34,8 +33,7 @@ int main() {
         getDownKeys(&playing, downKeys);
 
         while (t_accumulator > t_slice) {
-            // printf("Update\r\n");
-            update(&game, downKeys);
+            update(&game, downKeys, &gameClockAccumulator);
             t_accumulator -= t_slice;
         }
 
@@ -45,7 +43,7 @@ int main() {
     return 0;
 }
 
-void update(Game *game, char *downKeys) {
+void update(Game *game, char *downKeys, long long * gameClockAccumulator) {
     if (downKeys[0] != '\0') {
         switch (downKeys[0]) {
             case 'w':
@@ -77,6 +75,13 @@ void update(Game *game, char *downKeys) {
     }
 
     removeFirstCharIfPresent(downKeys);
+
+     long long timeDifference = time(NULL) - *gameClockAccumulator;
+
+     if (timeDifference >= 1) {
+         game->time += timeDifference;
+         *gameClockAccumulator = time(NULL);
+     }
 }
 
 Game getInitGame(short height) {
@@ -96,7 +101,7 @@ Game getInitGame(short height) {
     }
 
     Game *game = (Game *) malloc(sizeof(Game));
-    game->score = 0;
+    game->time = 0;
     game->pegs[0] = peg0;
     game->pegs[2] = peg1;
     game->pegs[1] = peg2;
