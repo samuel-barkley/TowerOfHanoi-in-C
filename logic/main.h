@@ -31,7 +31,7 @@ double getTimeInSeconds(clock_t t);
 clock_t getTimeInTicks(double t);
 void removeFirstCharIfPresent(char * charBuffer);
 Game getInitGame(short height);
-void update(Game *game, char * downKeys);
+void update(Game *game, char * downKeys, long long * gameClockAccumulator);
 
 
 // Unicode codes for rendering

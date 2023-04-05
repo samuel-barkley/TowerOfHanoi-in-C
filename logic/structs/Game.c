@@ -24,7 +24,7 @@ short compareGame(Game a, Game b) {
         return 0;
     }
 
-    if (a.score != b.score) {
+    if (a.time != b.time) {
         return 0;
     }
 
@@ -84,7 +84,7 @@ node_t * copyList(node_t * src)
 
 void copy_game(Game * src, Game * dest) {
     dest->hoveredPegPos = src->hoveredPegPos;
-    dest->score = src->score;
+    dest->time = src->time;
     dest->height = src->height;
     dest->selectedRing = src->selectedRing;
 
@@ -129,17 +129,8 @@ short getNumberLength(unsigned int number) {
 
 char * getNumberCharArray(unsigned int number) {
     char * numberArray = calloc(getNumberLength(number), sizeof(char) * getNumberLength(number) + 1);
-    // itoa(number, numberArray, 10); // check how unsigned ints convert to signed ints
 
-    // sprintf(numberArray, "%ud", number);
+    sprintf(numberArray, "%u", number);
 
-    // short numberOfChars = getNumberLength(number);
-    // int i = 0;
-    // int test = sizeof(char);
-    // char * numberArray = calloc(numberOfChars, sizeof(char));
-    // for (i = numberOfChars-1; i>=0; --i, number /= 10) {
-    //     char hihi = (number % 10) + '0';
-    //     numberArray[i] = (number % 10) + '0';
-    // }
     return numberArray;
 }

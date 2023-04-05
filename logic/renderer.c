@@ -15,7 +15,7 @@ void updateSelectedRing(Game game);
 
 void setCursorToPos(Point pos);
 
-void updateScore(Game game);
+void updateTime(Game game);
 
 void refreshScreen(Game game);
 
@@ -53,7 +53,7 @@ void render(double t_delta, Game *game) {
         updateElementBasePositions(terminalSize);
         pegDistance = game->height + 10;
         updateSelectedRing(*game);
-        updateScore(*game);
+        updateTime(*game);
         updatePegSelector(*game);
         drawAllPegs(*game);
         shouldInit = 0;
@@ -72,16 +72,6 @@ void updateElementBasePositions(Point newSize) {
 
     centralPegBasePos.x = newSize.x / 2;
     centralPegBasePos.y = newSize.y;
-}
-
-void setTerminalSize(unsigned int width, unsigned int height) {
-    // TODO: Probably should be deleted, windows terminal doesn't support it => all windows users => not cross platform enough.
-    //printf("\e[8;50;150t");
-
-    // Can't find how to do this at the moment.
-
-    // printf("hihi");
-    // system("mode con:cols=10 lines=20");
 }
 
 void handleTerminalCheckingAndResizing(Game game, Point terminalSize) {
@@ -114,8 +104,8 @@ void handleGameUpdating(Game *game, Game previousGameState) {
         }
     }
 
-    if (game->score != previousGameState.score) {
-        updateScore(*game);
+    if (game->time != previousGameState.time) {
+        updateTime(*game);
     }
 }
 
@@ -170,22 +160,22 @@ void clearTopRing(Game game) {
     clearBlocksAtPos(game.height + 2, adjustedClearPos);
 }
 
-void updateScore(Game game) {
-    char scoreToPrint[11];
-    memset(scoreToPrint, '\0', sizeof(scoreToPrint));
+void updateTime(Game game) {
+    char timeToPrint[11];
+    memset(timeToPrint, '\0', sizeof(timeToPrint));
 
-    char *numberCharArray = getNumberCharArray(game.score);
+    char *numberCharArray = getNumberCharArray(game.time);
     short stringLength = (short) strlen(numberCharArray);
 
-    strncpy(scoreToPrint, numberCharArray, stringLength);
+    strncpy(timeToPrint, numberCharArray, stringLength);
 
     Point adjustedPos;
-    adjustedPos.x = scoreBasePos.x - ((int) strnlen(scoreToPrint, 11));
+    adjustedPos.x = scoreBasePos.x - ((int) strnlen(timeToPrint, 11));
     adjustedPos.y = scoreBasePos.y;
 
     setCursorToPos(adjustedPos);
 
-    printf("Score: %s", scoreToPrint);
+    printf("Time: %s", timeToPrint);
     fflush(stdout);
 }
 
@@ -276,7 +266,7 @@ void setCursorToPos(Point pos) {
 
 void refreshScreen(Game game) {
     clearTerminal();
-    updateScore(game);
+    updateTime(game);
     drawAllPegs(game);
     updatePegSelector(game);
     updateSelectedRing(game);
