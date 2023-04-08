@@ -2,7 +2,7 @@
 // Created by samue on 29/03/2023.
 //
 
-#include "../../main.h"
+#include "../../Headers/main.h"
 #include <string.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>

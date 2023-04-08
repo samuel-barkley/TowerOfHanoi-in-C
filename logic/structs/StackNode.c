@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "StackNode.h"
-#include "../main.h"
+#include "../Headers/main.h"
 
 int pop(node_t ** head) {
     int retval = undefined;

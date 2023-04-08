@@ -7,7 +7,7 @@
 #include <strings.h>
 #include <windows.h>
 #include "TerminalHandler.h"
-#include "../../main.h"
+#include "../../Headers/main.h"
 
 void addCharToList(char *pressedKeys, char newKey);
 

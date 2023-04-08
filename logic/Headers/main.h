@@ -17,21 +17,15 @@
     #include <TargetConditionals.h>
     #if TARGET_OS_MAC == 1
         #define PLATFORM_NAME "osx" // Apple OSX
-        #include "./PlatformSpecificFiles/MacOS/TerminalHandler.h"
+        #include "../PlatformSpecificFiles/MacOS/TerminalHandler.h"
     #endif
 #else
 #define PLATFORM_NAME NULL
 #endif
 
 #include "time.h"
-#include "./structs/Game.h"
+#include "../structs/Game.h"
 
-double microToMilliSec(double microSeconds);
-double microToSec(double microSeconds);
-double getTimeInSeconds(clock_t t);
-clock_t getTimeInTicks(double t);
-void removeFirstCharIfPresent(char * charBuffer);
-Game getInitGame(short height);
 void update(Game *game, char * downKeys, long long * gameClockAccumulator);
 
 

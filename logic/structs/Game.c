@@ -6,11 +6,38 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Game.h"
-#include "../main.h"
+#include "../Headers/main.h"
 
 short comparePeg(node_t * a_peg, node_t * b_peg);
 void addRingPart(char ** ringString, char * blockToAdd);
 node_t * copyList(node_t * head);
+
+Game getInitGame(short height) {
+    node_t *peg0 = (node_t *) malloc(sizeof(node_t));
+    node_t *peg1 = (node_t *) malloc(sizeof(node_t));
+    node_t *peg2 = (node_t *) malloc(sizeof(node_t));
+
+    peg0->value = undefined;
+    peg0->next = NULL;
+    peg1->value = undefined;
+    peg1->next = NULL;
+    peg2->value = undefined;
+    peg2->next = NULL;
+
+    for (int i = 0; i < height; i++) {
+        push(&peg0, height - i);
+    }
+
+    Game *game = (Game *) malloc(sizeof(Game));
+    game->time = 0;
+    game->pegs[0] = peg0;
+    game->pegs[2] = peg1;
+    game->pegs[1] = peg2;
+    game->hoveredPegPos = 0;
+    game->selectedRing = undefined;
+    game->height = height;
+    return *game;
+}
 
 /// \param a
 /// \param b

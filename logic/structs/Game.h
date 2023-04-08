@@ -19,6 +19,7 @@ short compareGame(Game a, Game b);
 short getNumberLength(unsigned int number);
 char * getNumberCharArray(unsigned int number);
 char * generateRing(int size);
+Game getInitGame(short height);
 void copy_game(Game * src, Game * dest);
 
 #endif //TOWEROFHANOI_GAME_H
