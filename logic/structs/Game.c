@@ -9,7 +9,6 @@
 #include "../Headers/main.h"
 
 short comparePeg(node_t * a_peg, node_t * b_peg);
-void addRingPart(char ** ringString, char * blockToAdd);
 node_t * copyList(node_t * head);
 
 Game getInitGame(short height) {
@@ -63,28 +62,6 @@ short compareGame(Game a, Game b) {
     }
 
     return 1;
-}
-
-char * generateRing(int size) {
-    char * ringString = malloc(size * 4);   // * 4 for unicode characters
-
-    if (size == 1) {
-        addRingPart(&ringString, full_block);
-    }
-
-    addRingPart(&ringString, right_half_block);
-    for (int i = 1; i < size - 1; i++) {
-        addRingPart(&ringString, full_block);
-    }
-    addRingPart(&ringString, left_half_block);
-
-    return ringString;
-}
-
-void addRingPart(char ** ringString, char * blockToAdd) {
-    for (short i = 0; i < (short) strlen(blockToAdd); i++) {
-        *ringString[i] = blockToAdd[i];
-    }
 }
 
 node_t * copyList(node_t * src)

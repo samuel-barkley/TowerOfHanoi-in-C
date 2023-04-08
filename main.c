@@ -9,8 +9,10 @@
 int main() {
     double t_delta;
     double t_lastUpdate = getTimeInSeconds(clock());
-    double t_accumulator = getTimeInSeconds(clock());
-    double t_slice = 0.1;
+    double t_update_accumulator = getTimeInSeconds(clock());
+    double t_render_accumulator = getTimeInSeconds(clock());
+    double t_update_slice = 0.1;
+    double t_render_slice = 1.0 / 60;
     long long startTime = time(NULL);
     long long gameClockAccumulator = startTime;
 
@@ -27,16 +29,19 @@ int main() {
     while (playing == 1) {
         t_delta = getTimeInSeconds(clock()) - t_lastUpdate;
         t_lastUpdate += t_delta;
-        t_accumulator += t_delta;
+        t_update_accumulator += t_delta;
 
         getDownKeys(&playing, downKeys);
 
-        while (t_accumulator > t_slice) {
+        while (t_update_accumulator > t_update_slice) {
             update(&game, downKeys, &gameClockAccumulator);
-            t_accumulator -= t_slice;
+            t_update_accumulator -= t_update_slice;
         }
 
-        render(t_delta, &game);
+        while (t_render_accumulator > t_render_slice) {
+            render(t_delta, &game);
+            t_render_accumulator -= t_render_slice;
+        }
     }
 
     return 0;

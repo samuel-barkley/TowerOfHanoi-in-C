@@ -36,6 +36,7 @@ void update(Game *game, char * downKeys, long long * gameClockAccumulator);
 #define right_half_block "\u2590"
 #define selector_arrow "\u25B4"
 #define space_char " "
+#define infinity "\u221E"
 
 #define esc 27
 #define space 32

@@ -36,9 +36,13 @@ void clearTopRing(Game game);
 
 void updateElementBasePositions(Point newSize);
 
+void clearFps();
+
+void drawFps(double t_delta);
 
 Point scoreBasePos = {0, 0};
 Point centralPegBasePos = {0, 0};
+Point fpsPos = {0, 0};
 unsigned int pegDistance = 0;
 short heightBuffer = 3;
 
@@ -60,9 +64,9 @@ void render(double t_delta, Game *game) {
 
     static Game previousGameState;
     handleGameUpdating(game, previousGameState);
+    drawFps(t_delta);
 
     previousGameState = *game;
-
 }
 
 void updateElementBasePositions(Point newSize) {
@@ -381,4 +385,32 @@ void clearBlocksAtPos(short size, Point basePos) {
 
     printf("%s", clearBuffer);
     fflush(stdout);
+}
+
+void drawFps(double t_delta) {
+    unsigned int fps = 1.0 / (t_delta * 1000);
+    char fpsString[10];
+    if (fps >= 10000) {
+        sprintf(fpsString, infinity);
+    }
+    sprintf(fpsString, "%d", fps);
+
+     clearFps();
+
+     setCursorToPos(fpsPos);
+     printf("%s fps", fpsString);
+     fflush(stdout);
+}
+
+void clearFps() {
+    char clearBufferSize = 15;
+    char clearBuffer[clearBufferSize + 1];
+
+    for (int i = 0; i < clearBufferSize; i++) {
+        clearBuffer[i] = ' ';
+    }
+    clearBuffer[clearBufferSize] = '\0';
+
+    setCursorToPos(fpsPos);
+    printf("%s", clearBuffer);
 }

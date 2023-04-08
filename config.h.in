@@ -1,2 +1,0 @@
-#cmakedefine HAVE_TERMIOS_H 1
-#cmakedefine HAVE_CONIO_H
